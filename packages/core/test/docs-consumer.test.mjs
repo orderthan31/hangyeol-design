@@ -11,19 +11,19 @@ const json=p=>JSON.parse(fs.readFileSync(p));
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const pkg=json(path.join(docs,'package.json'));
 const require=createRequire(path.join(docs,'package.json'));
-const installed=path.dirname(require.resolve('hangyeol-core/package.json'));
+const installed=path.dirname(require.resolve('@orderthan31/hangyeol-core/package.json'));
 const manifest=json(path.join(installed,'payload/manifest.json'));
 const config=json(path.join(docs,'hangyeol.json'));
 test('workspace contains only core and Docs, with an exact installed tool dependency',()=>{
  assert.deepEqual(json(path.join(root,'package.json')).workspaces,['packages/core','apps/docs']);
  assert.equal(pkg.name,'@hangyeol/docs');
- assert.equal(pkg.devDependencies['hangyeol-core'],manifest.version);
+ assert.equal(pkg.devDependencies['@orderthan31/hangyeol-core'],manifest.version);
  assert.equal(fs.realpathSync(path.join(root,'node_modules/.bin/hangyeol')),fs.realpathSync(path.join(installed,'bin/hangyeol.mjs')));
  assert.match(fs.readFileSync(path.join(docs,'src/main.tsx'),'utf8'),/from '\.\/docs-app'/);
 });
 test('Docs uses the full installed library with genuine hash/version ownership records',()=>{
  assert.equal(config.sourceRoot,'src/hangyeol');assert.equal(config.stylePath,'src/hangyeol.css');
- assert.deepEqual(config.tool,{package:'hangyeol-core',version:manifest.version});
+ assert.deepEqual(config.tool,{package:'@orderthan31/hangyeol-core',version:manifest.version});
  assert.deepEqual([...config.components].sort(),Object.keys(manifest.items).sort());
  for(const [name,record] of Object.entries(manifest.files)){
   const target=config.sourceRoot+'/'+name;

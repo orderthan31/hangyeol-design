@@ -26,7 +26,7 @@ function invoke(label, command, args, cwd = root, expected = 0) {
 }
 
 test('packed core owns its executable, shared installer and same-version canonical payload', () => {
-  const dry = JSON.parse(invoke('dry-run', 'npm', ['pack', '--dry-run', '--json', '--workspace=hangyeol-core']))[0];
+  const dry = JSON.parse(invoke('dry-run', 'npm', ['pack', '--dry-run', '--json', '--workspace=@orderthan31/hangyeol-core']))[0];
   const files = new Set(dry.files.map(entry => entry.path));
   for (const file of ['bin/hangyeol.mjs', 'dist/router.mjs', 'dist/tools/installer.mjs',
     'dist/tools/safety.mjs', 'dist/tools/host-config.mjs', 'dist/tools/common.mjs', 'dist/tools/lint.mjs', 'dist/tools/lint-css.mjs',
@@ -36,11 +36,14 @@ test('packed core owns its executable, shared installer and same-version canonic
   const metadata = JSON.parse(fs.readFileSync(path.join(root, 'packages/core/package.json')));
   assert.equal(dry.version, metadata.version);
   assert.equal(metadata.license, 'UNLICENSED');
-  assert.equal(metadata.private, true);
+  assert.equal(metadata.private, false);
+  assert.equal(metadata.scripts.prepublishOnly, 'node publish-guard.mjs');
+  assert.equal(dry.name, '@orderthan31/hangyeol-core');
+  assert.equal(dry.filename, 'orderthan31-hangyeol-core-0.0.1.tgz');
   assert.ok(!metadata.scripts.postinstall, 'Installing tools must not secretly generate consumer UI');
 
   const destination = fs.mkdtempSync(path.join(evidence, 'artifact-'));
-  const packed = JSON.parse(invoke('pack', 'npm', ['pack', '--json', '--workspace=hangyeol-core', `--pack-destination=${destination}`]))[0];
+  const packed = JSON.parse(invoke('pack', 'npm', ['pack', '--json', '--workspace=@orderthan31/hangyeol-core', `--pack-destination=${destination}`]))[0];
   const tarball = path.join(destination, packed.filename);
   const entries = invoke('tar-list', 'tar', ['-tzf', tarball]).trim().split('\n');
   assert.ok(entries.every(entry => entry.startsWith('package/') && !entry.split('/').includes('..')));

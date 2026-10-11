@@ -43,13 +43,13 @@ test('physical installed init honors custom roots, alias, base and publicDir wit
   // Runtime helpers are deliberately absent: real init must install them and retain core.
   fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'core02-custom-host',version:'1.0.0',private:true,type:'module',dependencies:{react:'19.2.0','react-dom':'19.2.0'},devDependencies:{vite:'7.3.6',typescript:'5.9.3',...manifest.build,...manifest.types}},null,2)+'\n');
   run('install','npm',['install','--offline','--save-dev','--save-exact',artifact.tarball],host);
-  const installed=path.join(host,'node_modules/hangyeol-core'),bin=path.join(host,'node_modules/.bin/hangyeol');
+  const installed=path.join(host,'node_modules/@orderthan31/hangyeol-core'),bin=path.join(host,'node_modules/.bin/hangyeol');
   assert.equal(fs.lstatSync(installed).isSymbolicLink(),false);
   assert.equal(fs.realpathSync(bin),path.join(installed,'bin/hangyeol.mjs'));
   assert.equal(run('version',bin,['--version'],host).trim(),artifact.version);
   assert.ok(!fs.existsSync(path.join(host,'hangyeol.json'))&&!fs.existsSync(path.join(host,'src')),'no postinstall UI generation');
   const initialLock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json')));
-  const initialRecord=initialLock.packages['node_modules/hangyeol-core'];
+  const initialRecord=initialLock.packages['node_modules/@orderthan31/hangyeol-core'];
   const expectedIntegrity='sha512-'+crypto.createHash('sha512').update(fs.readFileSync(artifact.tarball)).digest('base64');
   assert.equal(initialRecord.integrity,expectedIntegrity);
   fs.mkdirSync(path.join(host,'styles'));
@@ -132,13 +132,13 @@ test('physical installed init honors custom roots, alias, base and publicDir wit
   for(const name of Object.keys(fontEvidence).filter(name=>name.endsWith('.woff2')))assert.ok(builtCSS.includes('/design/assets/type/'+name),'actual compiled font URL must match the configured base/public output');
   const postcss=createRequire(path.join(installed,'package.json'))('postcss');
   postcss.parse(builtCSS).walkRules(rule=>rule.walkDecls('box-sizing',decl=>{if(decl.value==='border-box')assert.ok(rule.selector.includes('[data-hangyeol]'),'box sizing stays inside canonical scope; no global Preflight');}));
-  const finalPackage=JSON.parse(fs.readFileSync(path.join(host,'package.json'))),finalLock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json'))),record=finalLock.packages['node_modules/hangyeol-core'];
+  const finalPackage=JSON.parse(fs.readFileSync(path.join(host,'package.json'))),finalLock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json'))),record=finalLock.packages['node_modules/@orderthan31/hangyeol-core'];
   assert.equal(record.version,artifact.version);assert.equal(record.integrity,expectedIntegrity);assert.equal(record.resolved,initialRecord.resolved);assert.equal(record.dev,true);
-  assert.equal(finalPackage.devDependencies['hangyeol-core'],initialLock.packages[''].devDependencies['hangyeol-core']);
-  assert.equal(finalLock.packages[''].devDependencies['hangyeol-core'],finalPackage.devDependencies['hangyeol-core']);
-  assert.ok(!finalPackage.dependencies['hangyeol-core']);
+  assert.equal(finalPackage.devDependencies['@orderthan31/hangyeol-core'],initialLock.packages[''].devDependencies['@orderthan31/hangyeol-core']);
+  assert.equal(finalLock.packages[''].devDependencies['@orderthan31/hangyeol-core'],finalPackage.devDependencies['@orderthan31/hangyeol-core']);
+  assert.ok(!finalPackage.dependencies['@orderthan31/hangyeol-core']);
   for(const [name,record] of Object.entries(fontEvidence))assert.equal(digest(fs.readFileSync(path.join(host,'dist/assets/type',name))),record.sha256,'Vite publicDir assets must be copied to actual production URL path');
-  fs.writeFileSync(path.join(evidence,'custom-installed-evidence.json'),JSON.stringify({host,bin,physicalPackage:true,version:artifact.version,tarball:artifact.tarball,packageDevDependency:finalPackage.devDependencies['hangyeol-core'],finalCoreLockRecord:record,settings:config.integration.settings,fonts:fontEvidence,httpFonts:'NOT VERIFIED; separate installed-init-http.test.mjs',sourceScanCompiled:true,aliasTypecheckAndBuild:true,noPostinstallGeneration:true,browserFontLoad:'NOT RUN',cache:'prepared CORE01 Mac cache, offline; not independent empty-cache/VPS proof'},null,2));
+  fs.writeFileSync(path.join(evidence,'custom-installed-evidence.json'),JSON.stringify({host,bin,physicalPackage:true,version:artifact.version,tarball:artifact.tarball,packageDevDependency:finalPackage.devDependencies['@orderthan31/hangyeol-core'],finalCoreLockRecord:record,settings:config.integration.settings,fonts:fontEvidence,httpFonts:'NOT VERIFIED; separate installed-init-http.test.mjs',sourceScanCompiled:true,aliasTypecheckAndBuild:true,noPostinstallGeneration:true,browserFontLoad:'NOT RUN',cache:'prepared CORE01 Mac cache, offline; not independent empty-cache/VPS proof'},null,2));
 });
 
 function reviewHost(label) {
@@ -146,7 +146,7 @@ function reviewHost(label) {
   const manifest=JSON.parse(fs.readFileSync(path.join(artifact.unpacked,'package/payload/manifest.json')));
   fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'core02-review-host',version:'1.0.0',private:true,type:'module',dependencies:{react:'19.2.0','react-dom':'19.2.0',...manifest.runtime},devDependencies:{vite:'7.3.6',...manifest.build,...manifest.types}},null,2)+'\n');
   run('review-install-'+label,'npm',['install','--offline','--save-dev','--save-exact',artifact.tarball],host);
-  const installed=path.join(host,'node_modules/hangyeol-core'),bin=path.join(host,'node_modules/.bin/hangyeol');
+  const installed=path.join(host,'node_modules/@orderthan31/hangyeol-core'),bin=path.join(host,'node_modules/.bin/hangyeol');
   assert.equal(fs.lstatSync(installed).isSymbolicLink(),false);assert.equal(fs.realpathSync(bin),path.join(installed,'bin/hangyeol.mjs'));
   assert.equal(run('review-version-'+label,bin,['--version'],host).trim(),artifact.version);
   return {host,bin};
@@ -210,15 +210,15 @@ test('installed review fix2 explicit enabled build options preserve actual custo
   unchanged('fix2-enabled-repeat',host,bin,['init'],0);
   fs.writeFileSync(path.join(host,'index.html'),'<link rel="stylesheet" href="/styles/theme.css"><main data-hangyeol>Font build</main>\n');
   run('fix2-enabled-build',path.join(host,'node_modules/.bin/vite'),['build'],host);
-  const manifest=JSON.parse(fs.readFileSync(path.join(host,'node_modules/hangyeol-core/payload/manifest.json'))),fonts={};
+  const manifest=JSON.parse(fs.readFileSync(path.join(host,'node_modules/@orderthan31/hangyeol-core/payload/manifest.json'))),fonts={};
   const css=fs.readdirSync(path.join(host,'dist/assets')).filter(p=>p.endsWith('.css')).map(p=>fs.readFileSync(path.join(host,'dist/assets',p),'utf8')).join('\n');
   for(const [name,record] of Object.entries(manifest.assets)) {
     const bytes=fs.readFileSync(path.join(host,'dist/assets/type',name));assert.equal(digest(bytes),record.hash);fonts[name]={sha256:digest(bytes),bytes:bytes.length};
     if(name.endsWith('.woff2'))assert.ok(css.includes('/design/assets/type/'+name));
   }
-  const pkg=JSON.parse(fs.readFileSync(path.join(host,'package.json'))),lock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json'))),record=lock.packages['node_modules/hangyeol-core'];
-  assert.equal(record.version,artifact.version);assert.equal(record.dev,true);assert.equal(record.integrity,'sha512-'+crypto.createHash('sha512').update(fs.readFileSync(artifact.tarball)).digest('base64'));assert.equal(lock.packages[''].devDependencies['hangyeol-core'],pkg.devDependencies['hangyeol-core']);
-  fs.writeFileSync(path.join(evidence,'enabled-build-evidence.json'),JSON.stringify({host,bin,fonts,explicitBuildOptions:{copyPublicDir:true,write:true},version:record.version,coreLock:record,coreDevDependency:pkg.devDependencies['hangyeol-core'],browserFontLoad:'NOT RUN',http:'NOT RUN this cycle'},null,2));
+  const pkg=JSON.parse(fs.readFileSync(path.join(host,'package.json'))),lock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json'))),record=lock.packages['node_modules/@orderthan31/hangyeol-core'];
+  assert.equal(record.version,artifact.version);assert.equal(record.dev,true);assert.equal(record.integrity,'sha512-'+crypto.createHash('sha512').update(fs.readFileSync(artifact.tarball)).digest('base64'));assert.equal(lock.packages[''].devDependencies['@orderthan31/hangyeol-core'],pkg.devDependencies['@orderthan31/hangyeol-core']);
+  fs.writeFileSync(path.join(evidence,'enabled-build-evidence.json'),JSON.stringify({host,bin,fonts,explicitBuildOptions:{copyPublicDir:true,write:true},version:record.version,coreLock:record,coreDevDependency:pkg.devDependencies['@orderthan31/hangyeol-core'],browserFontLoad:'NOT RUN',http:'NOT RUN this cycle'},null,2));
 });
 
 for(const name of ['tailwindcss','tailwindcss/theme.css','tailwindcss/utilities.css'])test(`installed review fix3 refuses mandatory Tailwind alias ${name} before writes/npm`,()=>{
@@ -246,7 +246,7 @@ test('installed review fix3 generated UI alias cannot select mandatory imports',
 });
 
 function p2InstalledHost(base,mode) {
-  const {host,bin}=reviewHost('p2-base'),installed=path.join(host,'node_modules/hangyeol-core'),config={schemaVersion:1,sourceRoot:'ui/system',stylePath:'styles/theme.css',publicRoot:'static',fontPath:'assets/type',alias:'@hangyeol',installed:{},components:[],basePath:base};
+  const {host,bin}=reviewHost('p2-base'),installed=path.join(host,'node_modules/@orderthan31/hangyeol-core'),config={schemaVersion:1,sourceRoot:'ui/system',stylePath:'styles/theme.css',publicRoot:'static',fontPath:'assets/type',alias:'@hangyeol',installed:{},components:[],basePath:base};
   for(const [file,bytes] of [['styles/theme.css',Buffer.from('body { color: chocolate; }\n')],['ui/system/lib/cn.ts',fs.readFileSync(path.join(installed,'payload/source/lib/cn.ts'))],['static/assets/type/owner.txt',Buffer.from('owner asset\n')],['.hangyeol-backups/sentinel/owner.txt',Buffer.from('owner backup\n')],['owner-metadata.json',Buffer.from('{"owner":"sentinel"}\n')]]){fs.mkdirSync(path.dirname(path.join(host,file)),{recursive:true});fs.writeFileSync(path.join(host,file),bytes);}
   fs.symlinkSync('owner-metadata.json',path.join(host,'owner-link'));
   if(mode==='config')fs.writeFileSync(path.join(host,'hangyeol.json'),JSON.stringify(config,null,2)+'\n');
@@ -258,9 +258,9 @@ function p2InstalledCall(fixture,args) {
   const {host,bin,installed,base,mode,trace,env}=fixture,command=[bin,...args],before=snapshot(host),started=new Date().toISOString(),start=performance.now();
   const result=spawnSync(bin,args,{cwd:host,encoding:'utf8',env,maxBuffer:16e6}),after=snapshot(host),file=path.join(host,'ui/system/foundation/fonts.css');
   const origin='https://host.example',urls=fs.existsSync(file)?[...fs.readFileSync(file,'utf8').matchAll(/url\("([^"\n]+)"\)/g)].map(([,input])=>{const url=new URL(input,origin);return {input,origin:url.origin,pathname:url.pathname};}):[];
-  const pkg=JSON.parse(fs.readFileSync(path.join(host,'package.json'))),lock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json'))),coreLock=lock.packages['node_modules/hangyeol-core'];
-  assert.equal(coreLock.version,artifact.version);assert.equal(coreLock.dev,true);assert.equal(coreLock.integrity,'sha512-'+crypto.createHash('sha512').update(fs.readFileSync(artifact.tarball)).digest('base64'));assert.equal(lock.packages[''].devDependencies['hangyeol-core'],pkg.devDependencies['hangyeol-core']);
-  fs.writeFileSync(path.join(evidence,`p2-installed-call-${process.hrtime.bigint()}.json`),JSON.stringify({runner:'physical-installed',base,mode,input:fixture.config,args,command,cwd:host,started,durationMs:performance.now()-start,runtime:process.version,exit:result.status,stdout:result.stdout,stderr:result.stderr,before,after,npmTrace:trace,npmInvocations:fs.readFileSync(trace,'utf8'),generatedFontURLs:urls,installerSha256:digest(fs.readFileSync(path.join(installed,'dist/tools/installer.mjs'))),bin,binResolved:fs.realpathSync(bin),physicalPackage:!fs.lstatSync(installed).isSymbolicLink(),tarball:artifact.tarball,tarballSha256:digest(fs.readFileSync(artifact.tarball)),coreLock,coreDevPin:pkg.devDependencies['hangyeol-core'],lockRootCorePin:lock.packages[''].devDependencies['hangyeol-core']},null,2));
+  const pkg=JSON.parse(fs.readFileSync(path.join(host,'package.json'))),lock=JSON.parse(fs.readFileSync(path.join(host,'package-lock.json'))),coreLock=lock.packages['node_modules/@orderthan31/hangyeol-core'];
+  assert.equal(coreLock.version,artifact.version);assert.equal(coreLock.dev,true);assert.equal(coreLock.integrity,'sha512-'+crypto.createHash('sha512').update(fs.readFileSync(artifact.tarball)).digest('base64'));assert.equal(lock.packages[''].devDependencies['@orderthan31/hangyeol-core'],pkg.devDependencies['@orderthan31/hangyeol-core']);
+  fs.writeFileSync(path.join(evidence,`p2-installed-call-${process.hrtime.bigint()}.json`),JSON.stringify({runner:'physical-installed',base,mode,input:fixture.config,args,command,cwd:host,started,durationMs:performance.now()-start,runtime:process.version,exit:result.status,stdout:result.stdout,stderr:result.stderr,before,after,npmTrace:trace,npmInvocations:fs.readFileSync(trace,'utf8'),generatedFontURLs:urls,installerSha256:digest(fs.readFileSync(path.join(installed,'dist/tools/installer.mjs'))),bin,binResolved:fs.realpathSync(bin),physicalPackage:!fs.lstatSync(installed).isSymbolicLink(),tarball:artifact.tarball,tarballSha256:digest(fs.readFileSync(artifact.tarball)),coreLock,coreDevPin:pkg.devDependencies['@orderthan31/hangyeol-core'],lockRootCorePin:lock.packages[''].devDependencies['@orderthan31/hangyeol-core']},null,2));
   return {result,before,after,urls};
 }
 for(const base of ['//','//cdn/'])for(const mode of ['flags','config'])test(`basePath P2 refuses installed ${mode} ${base} atomically`,()=>{

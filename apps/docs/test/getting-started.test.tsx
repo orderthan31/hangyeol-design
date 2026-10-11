@@ -16,6 +16,8 @@ it('renders core installation, supported CLI commands and local-source usage wit
   const shell = examples.filter(example => example.label === 'Shell').map(example => example.source).join('\n');
   expect(shell).toContain('\nnpm exec --no -- hangyeol --version');
   expect(shell).not.toContain('\\n');
+  expect(content).toContain('@orderthan31/hangyeol-core');
+  expect(shell).toContain('./orderthan31-hangyeol-core-0.0.1.tgz');
   for (const command of ['--help', 'init --dry-run', 'add theme text-field --dry-run', 'add button dialog', 'doctor', 'lint inspect', 'tokens validate', 'tokens inspect', 'tokens presets', 'tokens export --format json']) {
     expect(shell).toContain('npm exec --no -- hangyeol ' + command);
   }

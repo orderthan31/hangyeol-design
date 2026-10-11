@@ -1,0 +1,5 @@
+{
+  "candidate": "@orderthan31/hangyeol-core@0.0.1",
+  "uiAndCopyReviewComplete": false,
+  "reason": "Publication prohibited pending the later all-component border and description/usage audit. Package configuration completes first; global lint must also pass."
+}

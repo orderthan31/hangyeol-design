@@ -21,9 +21,9 @@ const integration=process.argv.includes('--integration');
 if(integration){
  // Extended source fixtures require a prepared offline dependency cache.
  const host=path.join(scratch,'tool-host');fs.mkdirSync(host,{recursive:true});
- fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'hangyeol-source-test-tools',private:true,type:'module',devDependencies:{'hangyeol-core':'file:'+artifact.tarball}}));
+ fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'hangyeol-source-test-tools',private:true,type:'module',devDependencies:{'@orderthan31/hangyeol-core':'file:'+artifact.tarball}}));
  run('install-tools','npm',['install','--prefix',host,'--offline','--ignore-scripts','--no-audit','--no-fund']);
- for(const n of ['08','09'])env[`CORE${n}_PACKAGE_ROOT`]=path.join(host,'node_modules/hangyeol-core');
+ for(const n of ['08','09'])env[`CORE${n}_PACKAGE_ROOT`]=path.join(host,'node_modules/@orderthan31/hangyeol-core');
 }
 const externalFixtures=new Set(['doctor-source.test.mjs','tokens-source.test.mjs','lint-source.test.mjs']);
 const tests=fs.readdirSync(path.join(root,'packages/core/test')).filter(n=>(n.endsWith('-source.test.mjs')||['package-boundary.test.mjs','init-contract.test.mjs','init-preflight.test.mjs','safety.test.mjs','safety-transaction.test.mjs','docs-consumer.test.mjs'].includes(n))&&(integration||!externalFixtures.has(n))).sort().map(n=>'packages/core/test/'+n);

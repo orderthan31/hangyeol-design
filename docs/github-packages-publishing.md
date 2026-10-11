@@ -1,100 +1,51 @@
-# 한결 core — GitHub Packages 배포 준비
+# 한결 core — GitHub Packages 수동 배포 구성
 
-이 문서는 **배포 전 준비 조건**입니다. 패키지 이름·공개 범위·라이선스·publish guard를 변경하거나 실제 publish를 실행하지 않습니다. 소비자용 설치·명령어 안내는 Docs의 시작하기 페이지에 있습니다.
+## 현재 구성과 게시 금지
 
-## 현재 코드에서 확인한 상태
+- 후보는 **`@orderthan31/hangyeol-core@0.0.1`**, 실행 파일은 `hangyeol`입니다.
+- `packages/core`만 npm 게시 대상입니다. core는 `private:false`이며 루트 `hangyeol`과 Docs `@hangyeol/docs`는 버전 `0.0.1`, `private:true`를 유지합니다.
+- 라이선스는 **UNLICENSED**입니다. npm의 private 플래그와 GitHub 패키지 visibility, 외부 사용 권한은 별개입니다. visibility와 라이선스는 변경하지 않았습니다.
+- repository는 `orderthan31/hangyeol-design`, directory는 `packages/core`, publishConfig.registry는 `https://npm.pkg.github.com`입니다.
+- **아직 게시하지 않으며 게시 준비 완료도 아닙니다.** `publication-readiness.json`의 `uiAndCopyReviewComplete:false`가 승인 입력과 무관하게 실제 publish guard를 차단합니다. 패키지 구성 작업 이후 모든 컴포넌트의 두껍거나 어두운 테두리, 설명/사용법 중복, 승인된 브랜드 대표 문구와 사용자 친화적인 소개를 별도 검토해야 합니다. 현재 작업에서 UI/CSS/Overview는 변경하지 않습니다.
+- 기존 global lint 실패도 그대로 release blocker입니다. workflow는 이를 무시하거나 baseline 면제로 처리하지 않습니다.
 
-- 배포 대상은 `packages/core` 한 개입니다. `apps/docs`나 저장소 루트는 npm 배포 대상이 아닙니다.
-- 현재 이름은 `hangyeol-core`, 버전은 `0.1.0-s2.1`, 실행 파일 이름은 `hangyeol`입니다.
-- core의 `private: true`와 `prepublishOnly`의 `publish-guard.mjs`가 publication을 막습니다. npm은 private:true인 패키지를 publish하지 않습니다.[5]
-- 현재 라이선스 메타데이터는 `UNLICENSED`입니다. 공개 여부와 외부 사용 허용 조건은 별도로 결정해야 합니다. 외부 사용을 허용하는 라이선스를 임의로 추가하지 않습니다.
-- 현재 설치 경로는 실제 로컬 `.tgz` → consumer의 exact devDependency → local CLI → init/add입니다. GitHub 레지스트리에서 배포된 scoped 패키지의 설치 증명은 아닙니다.
+## 실행 경계
 
-## 1. 소유 계정과 scoped 이름 결정
+`.github/workflows/publish-core.yml`은 **workflow_dispatch만** 받습니다. push, pull_request, release 자동 게시 trigger가 없습니다. 기본 `publish:false`는 build/test/typecheck/pack/lint 검증만 요청합니다.
 
-GitHub Packages의 npm 레지스트리는 소문자 scoped 패키지만 지원합니다. 현재 계정으로 배포한다면 **`@orderthan31/hangyeol-core`**를 제안합니다. 조직 계정을 사용한다면 그 조직의 실제 scope와 게시 권한을 먼저 확정합니다.[1]
+게시 job은 validation 성공, main ref, 정확한 저장소, `publish:true`, confirmation `@orderthan31/hangyeol-core@0.0.1`이 모두 있어야 진입합니다. 그 이후에도 위 readiness 차단이 적용됩니다. 후속 UI/카피 검토와 lint 해결을 별도 승인·검증하기 전 readiness를 변경하지 않습니다.
 
-CLI 이름은 계속 `hangyeol`로 유지할 수 있습니다. npm 패키지의 scope와 실행 파일 이름은 별개입니다.
+checkout v6와 setup-node v7은 검증한 commit SHA로 고정합니다. Node는 22.22.2입니다. validation은 contents:read, 게시 job만 packages:write를 가집니다. setup-node의 scope routing은 게시 job의 일회용 runner에만 설정합니다. `NODE_AUTH_TOKEN`은 publish step에서만 `secrets.GITHUB_TOKEN`으로 주입합니다. PAT나 새 secret은 요구하지 않습니다. 기존 Git push App 인증은 npm 인증이 아닙니다.
 
-**package.json의 name만 바꾸면 부족합니다.** 현재 다음 경계가 unscoped 이름을 사용하므로 같은 작업으로 이관·검증해야 합니다.
+`npm ci --ignore-scripts`는 dependency 설치에만 적용됩니다. publish에는 `--ignore-scripts=false`를 명시하고 guard도 우회 여부를 거부합니다. guard는 정확한 package/version/license/repository/registry, workflow/job/event/ref, dispatch payload와 명시적 승인을 확인합니다. 이는 의도 확인 장치이며 GitHub의 실제 registry 인증·권한을 대신하지 않습니다. guard를 제거하거나 `--ignore-scripts`로 우회해서 게시하지 않습니다.
 
-- `packages/core/src/tools/common.mjs`: 패키지·payload·tool manifest 이름 일치 검사
-- `scripts/build-slice-payload.mjs`, `packages/core/build.mjs`: 생성 manifest와 tool identity
-- `packages/core/src/doctor.mjs`: 실제 node_modules 위치, exact devDependency와 lock identity
-- `scripts/generate-slice-docs.mjs`, `apps/docs/package.json`: installed package lookup과 정확한 core pin
-- 소비자 `hangyeol.json`, lockfile, packed install fixtures 및 기존 사용자 이관 안내
+## 소비자와 scoped 경계
 
-scope 변경 후에도 이전 패키지 설치본의 편집 파일·설치 기록을 조용히 덮어쓰면 안 됩니다. 현재는 자동 update/migration 명령을 제공하지 않습니다.
+현재 소비 경로는 실제 로컬 `orderthan31-hangyeol-core-0.0.1.tgz` → exact devDependency → 물리적 `node_modules/@orderthan31/hangyeol-core` → 설치된 `hangyeol` CLI → init/add입니다. GitHub Packages scoped registry에서 게시 또는 설치 성공을 주장하지 않습니다. 공개 npm 의존성을 가져오는 것과 core를 GitHub Packages에서 설치하는 것은 다른 검증입니다.
 
-## 2. 게시 금지 설정과 사용 조건 검토
+GitHub Packages의 npm 패키지는 scope routing과 읽기 인증이 필요합니다. 최초 package visibility 및 repository Actions access도 게시 전에 확인해야 합니다. 이 작업은 visibility, 실제 사용자 인증 설정, checked-in `.npmrc`를 변경하지 않습니다. credentials·cache·환경 덤프를 저장소나 증거에 넣지 않습니다.
 
-- 실제 배포 승인을 받은 다음에 **core 패키지만** private:false로 변경하거나 private 필드를 제거합니다. 루트와 Docs의 private 설정은 유지합니다.[5]
-- `publish-guard.mjs`는 승인된 릴리스 경로를 허용하도록 별도로 변경해야 합니다. `--ignore-scripts`로 publication guard를 우회하지 않습니다.
-- 외부 사용 조건과 THIRD_PARTY_NOTICES, Pretendard·의존성 라이선스를 검토합니다. `UNLICENSED`라는 현재 상태를 MIT 등으로 자동 치환하지 않습니다.
-- `private:false`는 npm의 게시 금지 해제입니다. GitHub 패키지가 public인지 private인지는 별도 visibility 설정입니다.[1][5]
+`src/hangyeol`과 소비자의 `@hangyeol` alias는 소스 경로 계약입니다. npm 계정 scope `@orderthan31`로 바꾸지 않습니다.
 
-## 3. 레지스트리와 저장소 연결
+## 이전 로컬 후보의 명시적 이관
 
-아래는 **승인 후 core package.json에서 추가·수정할 필드의 제안**입니다. 전체 package.json을 이 조각으로 교체하지 않습니다. version, bin, engines, files, 의존성과 release gate도 함께 유지·검토합니다. GitHub는 repository 필드로 연결을 제공하고 publishConfig로 게시 레지스트리를 지정할 수 있습니다.[1]
+일반 init/add는 이전 tool/version을 거부합니다. 예외는 **unscoped `hangyeol-core@0.1.0-s2.1` → scoped `0.0.1`의 바이트 동일한 소유 파일**에 한정한 `init --migrate-from-unscoped`입니다. 이 이름/버전 언급은 역사적 migration input이며 현재 package identity가 아닙니다.
 
-```json
-{
-  "name": "@orderthan31/hangyeol-core",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/orderthan31/hangyeol-design.git",
-    "directory": "packages/core"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  }
-}
-```
+이관은 기존 record, 모든 선택 소스·공통 소스·스타일·글꼴의 현재 bytes와 새 payload bytes를 검사하고 실제 installer transaction으로 동일 파일을 noop 처리하며 metadata backup과 새 기록을 생성합니다. 편집·누락·모르는 owner·틀린 hash/version은 쓰기 전에 거부합니다. `--overwrite`와 결합할 수 없고 범용 update engine이 아닙니다. 소비자 편집이 있다면 먼저 별도로 보존·검토하고 이 명령을 강제로 적용하지 않습니다.
 
-credentials를 package.json, 저장소, 문서, 로그에 넣지 않습니다. 이번 준비에서 실제 .npmrc나 인증 설정은 변경하지 않습니다.
+Docs 유지보수에서는 core workspace 설치/빌드 후 `node scripts/generate-slice-docs.mjs --migrate-from-unscoped`를 **한 번만 명시적으로** 사용합니다. 이후 일반 generate의 init/add가 exact pin과 실제 설치 bin을 검증합니다. hash나 version record를 손으로 고치지 않습니다.
 
-## 4. GitHub Actions 게시 권한과 인증
+## 검증과 남은 단계
 
-권장 경로는 저장소의 GitHub Actions가 제공하는 `GITHUB_TOKEN`입니다. 연결된 저장소 패키지에 대한 권한을 확인하고, 게시 job의 최소 권한을 다음과 같이 선언합니다.[1][2]
+- source/packed contract tests는 실제 npm pack의 filename, payload/tool identity와 source hashes를 확인합니다.
+- guard 테스트는 network 없이 승인 context의 순수 validation과 잘못된 name/version/repository/ref/event/registry, 정상 로컬 실행의 거부를 확인합니다. 현재 readiness=false를 유지한 실제 guard는 항상 차단됩니다.
+- 로컬 tarball의 독립 물리 소비자에서는 렌더된 시작하기 App을 필수 `init`/`add theme text-field`만으로 검사합니다. default 경로와 별도 source/style/alias 경계를 구분합니다.
+- 게시 이후의 실제 GitHub Packages exact scoped 설치, repository Actions access, registry 권한·visibility는 아직 검증하지 않았습니다.
+- 브라우저/Playwright/E2E/AT와 전체 디자인 수용은 별도 단계입니다.
 
-```yaml
-permissions:
-  contents: read
-  packages: write
-```
+## 공식 참고
 
-- 공식 setup-node의 registry-url을 GitHub npm 레지스트리로 설정하고, publish step의 NODE_AUTH_TOKEN에 secrets.GITHUB_TOKEN을 연결합니다.[2]
-- 수동 workflow_dispatch 또는 승인된 release trigger, 필요한 경우 environment approval을 둡니다. 이 문서는 실제 workflow를 활성화하지 않습니다.
-- 첫 배포 또는 기존 패키지 재사용 시 repository 연결·Actions access를 확인합니다. 연결만으로 모든 다른 저장소가 접근하는 것은 아닙니다.[1][3]
-- 기존 Git push용 GitHub App helper를 패키지 게시 인증으로 자동 간주하지 않습니다. source push와 npm registry 인증은 별도 경계입니다. 현재 Git 인증을 PAT로 전환하지 않습니다.
-- 로컬 npm 인증이 필요하다면 공식 경로는 PAT classic입니다. 설치에는 최소 read:packages, 게시에는 write:packages와 해당 패키지의 게시 권한이 필요합니다. fine-grained PAT로 대체된다고 가정하지 않습니다.[1][3]
-
-## 5. public/private와 소비자 설치 인증
-
-처음 게시한 npm 패키지의 기본 visibility는 private입니다. 공개하려면 GitHub 패키지 설정에서 public으로 변경하는 절차와 권한을 따로 확인합니다. 저장소가 public인 것만으로 패키지까지 public이라고 간주하지 않습니다.[1]
-
-**GitHub Packages의 공개 npm 패키지도 install 인증이 필요합니다.** 소비자에게 실제 scoped 이름·게시 버전·scope routing과 read 인증 방법을 안내해야 합니다. Docker/container 레지스트리의 익명 접근 규칙과 혼동하지 않습니다.[1][3]
-
-소비자 안내는 실제 게시·설치 검증 후 변경합니다. 현재 시작하기 페이지에 존재하지 않는 registry 버전을 성공한 설치 명령으로 표시하지 않습니다.
-
-## 6. 릴리스 전에 실제 실행할 검증
-
-- scoped 이름으로 전체 build/pack을 수행하고 새 manifest·tool hash·설치 메타데이터를 검증합니다.
-- tarball에는 bin/dist/payload/README/license 경계만 담고 credentials·.npmrc·cache·환경 파일·내부 실행 기록을 제외합니다. GitHub npm tarball의 크기 제한도 확인합니다.[1]
-- 해당 tarball로 독립 consumer에서 init/add → local import → tsc/Vite build → doctor/lint/tokens를 실행합니다.
-- 게시 승인 후에는 **GitHub Packages의 실제 scoped 이름과 exact version**으로 새 consumer에서 다시 설치해 bin, lock SRI, ownership records, 선택 컴포넌트 의존성까지 확인합니다. 로컬 tarball 성공은 scoped registry 인증·설치 성공을 대신하지 않습니다.
-- 현재 root lint와 전체 설치본의 기존 진단은 그대로 보존하고 release baseline/허용 기준을 명시합니다. warning/diagnostic을 숨겨 green으로 만들지 않습니다.
-- browser/E2E/AT/visual acceptance는 별도 단계이며, 현재 source/build 검증과 섞지 않습니다.
-
-## 문서 명령어의 확인 범위
-
-시작하기 페이지의 npm exec --no 형식은 설치된 local bin을 사용하고 자동 다운로드를 거부하도록 안내합니다.[4] 실제 현재 tarball과 새 격리 npm cache·공개 npm 의존성을 사용한 독립 소비자에서 기본 init/add, 읽기 전용 관리 명령, token export 및 페이지의 App 예제를 tsc/Vite로 실행했습니다. 이 검증은 현재 unscoped local archive의 소비 경로를 확인하며 GitHub Packages 게시 완료를 뜻하지 않습니다.
-
-## Sources
-
-[1] https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry
-[2] https://docs.github.com/en/actions/tutorials/publish-packages/publish-nodejs-packages
-[3] https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages
-[4] https://docs.npmjs.com/cli/v10/commands/npm-exec
-[5] https://docs.npmjs.com/cli/v10/configuring-npm/package-json
+- GitHub Docs: Working with the npm registry — scoped naming, repository association, registry/authentication and visibility.
+- GitHub Docs: Publishing Node.js packages — setup-node and GITHUB_TOKEN.
+- GitHub Docs: Workflow syntax for GitHub Actions — workflow_dispatch inputs, conditions and job permissions.
+- npm Docs: package.json and npm exec — private/publishConfig and installed local executable behavior.

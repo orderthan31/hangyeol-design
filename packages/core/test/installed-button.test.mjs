@@ -35,13 +35,13 @@ test('physical core installs only editable Button graph and preserves initialize
  fs.writeFileSync(path.join(host,'sentinel.txt'),'unrelated owner file\n');
  const pkgBefore=readJSON(path.join(host,'package.json'));
  run('physical-install','npm',['install','--offline','--save-dev','--save-exact',artifact.tarball],host);
- const installed=path.join(host,'node_modules/hangyeol-core'),bin=path.join(host,'node_modules/.bin/hangyeol');
+ const installed=path.join(host,'node_modules/@orderthan31/hangyeol-core'),bin=path.join(host,'node_modules/.bin/hangyeol');
  assert.equal(fs.lstatSync(installed).isSymbolicLink(),false);
  assert.equal(fs.realpathSync(bin),path.join(installed,'bin/hangyeol.mjs'));
  assert.equal(sha(fs.readFileSync(artifact.tarball)),artifact.sha256);
  assert.equal(run('version',bin,['--version'],host).stdout.trim(),artifact.version);
  assert.ok(!fs.existsSync(path.join(host,'hangyeol.json'))&&!fs.existsSync(path.join(host,'ui')),'no postinstall generation');
- const lockBefore=readJSON(path.join(host,'package-lock.json')),coreBefore=lockBefore.packages['node_modules/hangyeol-core'];
+ const lockBefore=readJSON(path.join(host,'package-lock.json')),coreBefore=lockBefore.packages['node_modules/@orderthan31/hangyeol-core'];
  const integrity='sha512-'+crypto.createHash('sha512').update(fs.readFileSync(artifact.tarball)).digest('base64');
  assert.equal(coreBefore.integrity,integrity);
  assert.equal(sha(fs.readFileSync(path.join(installed,'dist/tools/installer.mjs'))),sha(fs.readFileSync(new URL('../src/tools/installer.mjs',import.meta.url))));
@@ -85,7 +85,7 @@ test('physical core installs only editable Button graph and preserves initialize
  assert.deepEqual(Object.keys(graph).filter(k=>graph[k].sha256).sort(),expectedSources);
  const button=path.join(host,'ui/system/primitives/button.tsx');
  assert.equal(sha(fs.readFileSync(button)),manifest.files['primitives/button.tsx'].hash);
- for(const file of expectedSources)assert.ok(!/from\s*['"](?:hangyeol-core|hangyeol-core\/tools)/.test(fs.readFileSync(path.join(host,settings.sourceRoot,file),'utf8')));
+ for(const file of expectedSources)assert.ok(!/from\s*['"](?:@orderthan31\/hangyeol-core|@orderthan31\/hangyeol-core\/tools)/.test(fs.readFileSync(path.join(host,settings.sourceRoot,file),'utf8')));
  const fonts={};for(const [name,record] of Object.entries(manifest.assets)){
   const bytes=fs.readFileSync(path.join(host,'static/assets/type',name));assert.equal(sha(bytes),record.hash);assert.deepEqual(bytes,fs.readFileSync(path.join(installed,'payload/assets',name)));
   if(name.endsWith('.woff2'))assert.equal(bytes.subarray(0,4).toString(),'wOF2');fonts[name]={sha256:sha(bytes),bytes:bytes.length};
@@ -113,12 +113,12 @@ test('physical core installs only editable Button graph and preserves initialize
  assert.deepEqual(finalConfig.integration,initialized.integration);assert.deepEqual(finalConfig.components,['button']);
  assert.equal(fs.readFileSync(path.join(host,'sentinel.txt'),'utf8'),'unrelated owner file\n');
  assert.equal(fs.readFileSync(path.join(host,settings.stylePath),'utf8'),hostCSS);
- const finalPkg=readJSON(path.join(host,'package.json')),finalLock=readJSON(path.join(host,'package-lock.json')),core=finalLock.packages['node_modules/hangyeol-core'];
+ const finalPkg=readJSON(path.join(host,'package.json')),finalLock=readJSON(path.join(host,'package-lock.json')),core=finalLock.packages['node_modules/@orderthan31/hangyeol-core'];
  assert.equal(core.version,artifact.version);assert.equal(core.integrity,integrity);assert.equal(core.resolved,coreBefore.resolved);assert.equal(core.dev,true);
- assert.equal(finalPkg.devDependencies['hangyeol-core'],lockBefore.packages[''].devDependencies['hangyeol-core']);assert.equal(finalLock.packages[''].devDependencies['hangyeol-core'],finalPkg.devDependencies['hangyeol-core']);assert.ok(!finalPkg.dependencies['hangyeol-core']);
+ assert.equal(finalPkg.devDependencies['@orderthan31/hangyeol-core'],lockBefore.packages[''].devDependencies['@orderthan31/hangyeol-core']);assert.equal(finalLock.packages[''].devDependencies['@orderthan31/hangyeol-core'],finalPkg.devDependencies['@orderthan31/hangyeol-core']);assert.ok(!finalPkg.dependencies['@orderthan31/hangyeol-core']);
  assert.deepEqual(finalPkg.dependencies,{...pkgBefore.dependencies,...manifest.runtime});assert.deepEqual(finalPkg,pkgInit,'add and overwrite must not change package dependencies');
  assert.ok(!Object.keys({...finalPkg.dependencies,...finalPkg.devDependencies}).some(name=>/radix|recharts|react-is/.test(name)));
  for(const [name,record] of Object.entries(fonts))assert.equal(sha(fs.readFileSync(path.join(host,'dist/assets/type',name))),record.sha256,'production build copies real fonts/license/provenance');
  const lockPackages=Object.keys(finalLock.packages).filter(p=>/radix|recharts|react-is/.test(p));
- fs.writeFileSync(path.join(evidence,'installed-button-evidence.json'),JSON.stringify({host,physicalPackage:installed,bin,binResolved:fs.realpathSync(bin),tarball:artifact.tarball,sha256:artifact.sha256,version:artifact.version,integrity,coreLock:core,coreDevPin:finalPkg.devDependencies['hangyeol-core'],pkgBefore,pkgInit,finalPkg,initPlan,addPlan,overwrite,commonRecords,commonBefore,sourceGraph:graph,fonts,fontURLs:urls.map(u=>u.href),localEditMarker:marker,localEditedButtonHash:sha(editedButton),backupHash:sha(fs.readFileSync(path.join(host,replacements[0].backup))),toolTransitiveMatchingPackages:lockPackages,license:'private UNLICENSED first-party candidate; copied Pretendard SIL OFL 1.1 license/provenance unchanged',cache:'prepared Mac offline cache; no empty-cache/VPS/live registry proof',browserFontLoad:'NOT RUN',http:'NOT RUN; no listener required for this Button contract'},null,2));
+ fs.writeFileSync(path.join(evidence,'installed-button-evidence.json'),JSON.stringify({host,physicalPackage:installed,bin,binResolved:fs.realpathSync(bin),tarball:artifact.tarball,sha256:artifact.sha256,version:artifact.version,integrity,coreLock:core,coreDevPin:finalPkg.devDependencies['@orderthan31/hangyeol-core'],pkgBefore,pkgInit,finalPkg,initPlan,addPlan,overwrite,commonRecords,commonBefore,sourceGraph:graph,fonts,fontURLs:urls.map(u=>u.href),localEditMarker:marker,localEditedButtonHash:sha(editedButton),backupHash:sha(fs.readFileSync(path.join(host,replacements[0].backup))),toolTransitiveMatchingPackages:lockPackages,license:'guarded UNLICENSED first-party candidate; copied Pretendard SIL OFL 1.1 license/provenance unchanged',cache:'prepared Mac offline cache; no empty-cache/VPS/live registry proof',browserFontLoad:'NOT RUN',http:'NOT RUN; no listener required for this Button contract'},null,2));
 });

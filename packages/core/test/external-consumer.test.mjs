@@ -70,9 +70,9 @@ function validateArtifact(metadata) {
   assert.equal(digest(tarBytes), metadata.sha256, 'Actual tarball SHA256 must match artifact metadata');
   assert.equal('sha512-' + crypto.createHash('sha512').update(tarBytes).digest('base64'), metadata.integrity, 'Actual tarball SRI must match metadata');
   const pkg = json(path.join(packageRoot, 'package.json'));
-  assert.equal(pkg.name, 'hangyeol-core');
+  assert.equal(pkg.name, '@orderthan31/hangyeol-core');
   assert.equal(pkg.version, metadata.version);
-  assert.equal(pkg.private, true);
+  assert.equal(pkg.private, false);
   assert.equal(pkg.license, 'UNLICENSED');
   assert.deepEqual(pkg.bin, { hangyeol: 'bin/hangyeol.mjs' });
   const manifest = json(path.join(packageRoot, 'payload/manifest.json'));
@@ -102,18 +102,18 @@ function npmGuard(label) {
 }
 function assertCoreIdentity(host) {
   const pkg = json(path.join(host, 'package.json')), lock = json(path.join(host, 'package-lock.json'));
-  const spec = pkg.devDependencies['hangyeol-core'], entry = lock.packages['node_modules/hangyeol-core'];
+  const spec = pkg.devDependencies['@orderthan31/hangyeol-core'], entry = lock.packages['node_modules/@orderthan31/hangyeol-core'];
   assert.match(spec, /^file:/);
   assert.equal(path.resolve(host, spec.slice(5)), artifact.tarball);
-  assert.ok(!pkg.dependencies['hangyeol-core']);
-  assert.equal(lock.packages[''].devDependencies['hangyeol-core'], spec);
+  assert.ok(!pkg.dependencies['@orderthan31/hangyeol-core']);
+  assert.equal(lock.packages[''].devDependencies['@orderthan31/hangyeol-core'], spec);
   assert.equal(entry.version, artifact.version);
   assert.equal(entry.dev, true);
   assert.ok(!entry.link);
   assert.equal(entry.integrity, artifact.integrity);
   assert.match(entry.resolved, /^file:/);
   assert.equal(path.resolve(host, entry.resolved.slice(5)), artifact.tarball);
-  const physical = path.join(host, 'node_modules/hangyeol-core'), bin = path.join(host, 'node_modules/.bin/hangyeol');
+  const physical = path.join(host, 'node_modules/@orderthan31/hangyeol-core'), bin = path.join(host, 'node_modules/.bin/hangyeol');
   assert.equal(fs.lstatSync(physical).isSymbolicLink(), false);
   assert.equal(fs.realpathSync(physical), physical);
   assert.equal(fs.realpathSync(bin), path.join(physical, corePackage.bin.hangyeol));
@@ -265,7 +265,7 @@ test('independent physical consumer runs installed core and builds preserved edi
       if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) specifier = node.moduleSpecifier;
       else if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) specifier = node.moduleReference.expression;
       else if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === 'require')) specifier = node.arguments[0];
-      if (specifier && ts.isStringLiteral(specifier)) { imports.push({ file: name, line: ast.getLineAndCharacterOfPosition(node.getStart(ast)).line + 1, specifier: specifier.text }); assert.ok(!/^(hangyeol-core|hangyeol-core\/tools)(\/|$)/.test(specifier.text)); }
+      if (specifier && ts.isStringLiteral(specifier)) { imports.push({ file: name, line: ast.getLineAndCharacterOfPosition(node.getStart(ast)).line + 1, specifier: specifier.text }); assert.ok(!/^(@orderthan31\/hangyeol-core|@orderthan31\/hangyeol-core\/tools)(\/|$)/.test(specifier.text)); }
       ts.forEachChild(node, visit);
     }
     visit(ast);

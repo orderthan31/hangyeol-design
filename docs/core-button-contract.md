@@ -1,13 +1,13 @@
 # Button source contract (CORE-03)
 
-`hangyeol-core`는 설치 도구인 private `UNLICENSED` 후보 패키지입니다. 소비자 UI는 설치된 core 런타임 대신 로컬 소스를 가져옵니다. 공개 registry/Release 다운로드나 라이선스 부여를 주장하지 않습니다.
+`@orderthan31/hangyeol-core`는 설치 도구인 guarded `UNLICENSED` 후보 패키지입니다. 소비자 UI는 설치된 core 런타임 대신 로컬 소스를 가져옵니다. 공개 registry/Release 다운로드나 라이선스 부여를 주장하지 않습니다.
 
 ## Local installation and source graph
 
 로컬에서 생성한 실제 tarball을 소비자 호스트에 설치합니다. tarball 경로는 생성 결과를 사용합니다. registry fallback이나 workspace 링크를 사용하지 않습니다.
 
 ```sh
-npm pack --workspace=hangyeol-core --pack-destination=<external-artifact-directory>
+npm pack --workspace=@orderthan31/hangyeol-core --pack-destination=<external-artifact-directory>
 # React 19 / Vite / Tailwind 4 호스트에서:
 npm install --offline --save-dev --save-exact <actual-tarball-path>
 ./node_modules/.bin/hangyeol init

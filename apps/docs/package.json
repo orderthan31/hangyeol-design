@@ -1,6 +1,6 @@
 {
   "name": "@hangyeol/docs",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -42,7 +42,7 @@
     "@types/prismjs": "1.26.6",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    "hangyeol-core": "0.1.0-s2.1",
+    "@orderthan31/hangyeol-core": "0.0.1",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
     "vite": "7.3.6"

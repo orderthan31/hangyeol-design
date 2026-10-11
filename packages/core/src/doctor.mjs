@@ -76,11 +76,11 @@ export async function runDoctor(args, boundary) {
     if (config.integration && !isDeepStrictEqual(Object.fromEntries(Object.keys(report.config).map(k => [k, config.integration.settings?.[k]])), report.config)) error('config.integration', 'hangyeol.json#integration.settings', 'Recorded integration path/alias settings differ from current settings.');
 
     const pkg = json('package.json', 'package'), lock = json('package-lock.json', 'lock');
-    const installedPkg = json('node_modules/hangyeol-core/package.json', 'core');
-    const pin = pkg?.devDependencies?.['hangyeol-core'], record = lock?.packages?.['node_modules/hangyeol-core'];
-    if (!pin || typeof pin !== 'string' || !(pin.startsWith('file:') && pin.length > 5 || pin === boundary.pkg.version) || pkg?.dependencies?.['hangyeol-core']) error('core.dev-pin', 'package.json', 'Core must be an exact devDependency, separate from UI runtime dependencies.');
-    if (!record || record.version !== boundary.pkg.version || record.dev !== true || record.link || typeof record.integrity !== 'string' || !/^sha512-[A-Za-z0-9+/]{86}==$/.test(record.integrity) || typeof record.resolved !== 'string' || !record.resolved || lock?.packages?.['']?.devDependencies?.['hangyeol-core'] !== pin || installedPkg?.name !== boundary.pkg.name || installedPkg?.version !== boundary.pkg.version) error('core.identity', 'package-lock.json', 'Physical core/version/dev pin/lock integrity identity is missing or inconsistent.');
-    else add('core.identity', 'ok', 'node_modules/hangyeol-core/package.json', 'Physical installed package, dev pin and lock identify this version.', 'No action.', { version: record.version, integrity: record.integrity });
+    const installedPkg = json('node_modules/@orderthan31/hangyeol-core/package.json', 'core');
+    const pin = pkg?.devDependencies?.['@orderthan31/hangyeol-core'], record = lock?.packages?.['node_modules/@orderthan31/hangyeol-core'];
+    if (!pin || typeof pin !== 'string' || !(pin.startsWith('file:') && pin.length > 5 || pin === boundary.pkg.version) || pkg?.dependencies?.['@orderthan31/hangyeol-core']) error('core.dev-pin', 'package.json', 'Core must be an exact devDependency, separate from UI runtime dependencies.');
+    if (!record || record.version !== boundary.pkg.version || record.dev !== true || record.link || typeof record.integrity !== 'string' || !/^sha512-[A-Za-z0-9+/]{86}==$/.test(record.integrity) || typeof record.resolved !== 'string' || !record.resolved || lock?.packages?.['']?.devDependencies?.['@orderthan31/hangyeol-core'] !== pin || installedPkg?.name !== boundary.pkg.name || installedPkg?.version !== boundary.pkg.version) error('core.identity', 'package-lock.json', 'Physical core/version/dev pin/lock integrity identity is missing or inconsistent.');
+    else add('core.identity', 'ok', 'node_modules/@orderthan31/hangyeol-core/package.json', 'Physical installed package, dev pin and lock identify this version.', 'No action.', { version: record.version, integrity: record.integrity });
 
     const manifest = boundary.manifest, sourceNames = new Set(manifest.common), visited = new Set();
     function visit(name) {
@@ -107,7 +107,7 @@ export async function runDoctor(args, boundary) {
     const toolRequire = createRequire(path.join(boundary.root, 'package.json'));
     for (const [name, expected] of Object.entries(boundary.pkg.dependencies)) {
       const metadata = JSON.parse(fs.readFileSync(toolRequire.resolve(`${name}/package.json`)));
-      if (metadata.version !== expected) error('core.tool-version', 'node_modules/hangyeol-core/package.json', `Installed core tool dependency ${name} does not match its pinned version.`);
+      if (metadata.version !== expected) error('core.tool-version', 'node_modules/@orderthan31/hangyeol-core/package.json', `Installed core tool dependency ${name} does not match its pinned version.`);
       report.dependencies.coreTools.push({ name, version: expected, license: metadata.license, role: 'development tool; not requested UI runtime' });
     }
     const expected = new Map([...sourceNames].map(n => [`${config.sourceRoot}/${n}`, { kind: 'source', template: manifest.files[n].hash }]));

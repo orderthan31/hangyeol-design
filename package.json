@@ -1,6 +1,6 @@
 {
   "name": "hangyeol",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -8,11 +8,11 @@
   },
   "scripts": {
     "dev": "npm run dev -w @hangyeol/docs",
-    "build": "npm run build -w hangyeol-core && npm run generate -w @hangyeol/docs && npm run build -w @hangyeol/docs",
+    "build": "npm run build -w @orderthan31/hangyeol-core && npm run generate -w @hangyeol/docs && npm run build -w @hangyeol/docs",
     "build:slice": "npm run build",
     "typecheck": "tsc -p packages/core/tsconfig.json && tsc -p apps/docs/tsconfig.json",
     "typecheck:slice": "npm run typecheck",
-    "test": "npm run test:source -w hangyeol-core && npm run test:code -w @hangyeol/docs",
+    "test": "npm run test:source -w @orderthan31/hangyeol-core && npm run test:code -w @hangyeol/docs",
     "test:slice": "npm run test",
     "lint:slice": "node scripts/lint-slice.mjs",
     "lint:design": "npm run lint:slice",

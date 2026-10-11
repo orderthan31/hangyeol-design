@@ -8,454 +8,454 @@
   "alias": null,
   "installed": {
     "src/hangyeol/foundation/theme.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c05f2de9c8f44026cd87bd3f9f336e29d281e93ddc205ac7edee6ed15e544e7f"
     },
     "src/hangyeol/lib/cn.ts": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "8f8f4fbae84572af710b1c4aedad6ee43889436ec89d74942679c4335ff7c8ea"
     },
     "public/fonts/hangyeol/LICENSE": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "d31ddd9f2bed32fd7e302a205cf2380ba0de6529152d239ef99cfb6f261bfc04"
     },
     "public/fonts/hangyeol/Pretendard-Bold.woff2": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "4609c3356e536fafe38f4add0daeceb3d8595d3057bce13c428c33ddbd43d362"
     },
     "public/fonts/hangyeol/Pretendard-Medium.woff2": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "d03481330eeba0659ab5b87f25ceb504a35de377dd90a0d0aba2982eb2d05e2c"
     },
     "public/fonts/hangyeol/Pretendard-Regular.woff2": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "fad853f7f47c6c8b103171e7193fa095708cdcd70850a71d93aa5379e8a61d63"
     },
     "public/fonts/hangyeol/Pretendard-SemiBold.woff2": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0"
     },
     "public/fonts/hangyeol/provenance.json": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "3ca94ffbe6da16753984622184cc4d9765ba77c1cc617c5a5f5eda754b16fbee"
     },
     "src/hangyeol/foundation/fonts.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "4012f4ab9c27283e49a4aa26a8feed9567995fdadcaa4d6ae917f06815375287"
     },
     "src/hangyeol.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "7cd6e2d458d98c31824fa88a3f1ef8649b0a86f3a4acb89c1da9aa743b3ad964"
     },
     "src/hangyeol/primitives/icon.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "4c921d031264f3b4aa135bb069285cf25e4afdde90a8b3a62807f54395ebd178"
     },
     "src/hangyeol/primitives/accordion.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "14dabcd676f84091780624549df39ea93302e7e031843eeb95f57235169f0d65"
     },
     "src/hangyeol/components/action-group.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c4bbdc1b958f6344b8e49f0bcd7ec7899130a1bfa8cdf058476069523c30f028"
     },
     "src/hangyeol/primitives/input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "a4f403e48f39816c277541a495dc671623eeeb10deb7a6b48f48bcd9c48667e5"
     },
     "src/hangyeol/primitives/button.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "6a1a3dfcec3f8e54131b8c9c50159cc3662f15641998de691a93f893a2ffc4e6"
     },
     "src/hangyeol/components/form-field.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "f04392b5ac8b4569f5c9b0e1c5c877677179a0b39d6328ff71cb5506513593d4"
     },
     "src/hangyeol/components/text-field.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "09cce6e4c1bb22150a6b02d537605cd9033e8869a9aaa90d9668cd3dc5eb0488"
     },
     "src/hangyeol/components/address-field.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "5c130518a397fa2ca46c6265a29662ac094b60975a0c2fddc339a2aeb13df23b"
     },
     "src/hangyeol/lib/use-field-state.ts": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "0c31b69e8337e139ec661b84a99e742167fd548bdd86a36fab07ec582e552367"
     },
     "src/hangyeol/primitives/icon-button.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "7f708eba53ea66937312bb0d8623b5202d7946c208b22b99c32bd4c9bce5594c"
     },
     "src/hangyeol/components/alert.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "e45c16fa902f092d3dc2ec9685df0c9cbcaa32724b5675111f420b79cb52ae48"
     },
     "src/hangyeol/primitives/badge.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "98cd6917e227c4aee36d21804206e30ef5d6ad7eb037b21e6dd32644fd1015f1"
     },
     "src/hangyeol/components/bottom-cta.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "97781d8edf11ecb77a8a9ad629cb90e4beb3271c36e93435281cd73ddf93c124"
     },
     "src/hangyeol/foundation/theme.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "856c36192e8667cdbcc4dcc1c230e72cacb63eb22d332b0072d2474ea92a889e"
     },
     "src/hangyeol/primitives/dialog.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "714292fecea8df8788cb88c708b481f38956604ba00dbe4065b8018c520d7d52"
     },
     "src/hangyeol/primitives/portal.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "2290fc8bdf1cefe57ae79258b255cb474b7df8cd8b7697a999ff9d84abfdd075"
     },
     "src/hangyeol/components/bottom-sheet.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "eecf67c06b1751f45b58350b0008dc629f5da0a8b6d0a5f4fbafbaaf2a035d67"
     },
     "src/hangyeol/components/breadcrumb.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c8ba13eea0f874caf11eb00da8cad3e95b0d61ea43d23cd6b872d7b030b96cd7"
     },
     "src/hangyeol/components/bubble.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "a10df6cee0648a03e988bd0b70f5e3d74e2c58ea6d886647494b710308a85d1a"
     },
     "src/hangyeol/components/table.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c16a599628d00965ed1cf32758fa3e47d3aafe9a99deb9afd0acf8bbaa63cff5"
     },
     "src/hangyeol/components/empty-state.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "74aa0b3653d943f8897ceea8381abda65195d3340b517702959df580e781acc2"
     },
     "src/hangyeol/components/error-state.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "ab4622afdebf37ece99a0026b4bc2502be9aaa1a08ecfeb40e85eb418bb9aa6c"
     },
     "src/hangyeol/components/chart.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "cfb1700180b6c26a95cf13ab0fd0b6de2ad8b4379a80e3784181df71d92d43ea"
     },
     "src/hangyeol/primitives/checkbox.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "17649baec1729d8ace18133e225114bb5bc34213900f3a4cc182f642a2b84d99"
     },
     "src/hangyeol/components/checkbox-group.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "3f04f5f08fa947a205032d3176a56aef157ab5e61ff7e71a377b902e77dc1cdd"
     },
     "src/hangyeol/primitives/collapse.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "f6f30cebe99113ae76c479fa86ff128a35db1b2a2ff19e5250a08389503175ad"
     },
     "src/hangyeol/primitives/popover.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "792fbb8727cede4af65b25991bc3ae1ce07a2973b7c759d21004f3a4ef29c2f6"
     },
     "src/hangyeol/components/combobox.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "b1df1fd9690db5e5dcb30ad34372ab31879e12ca12a4f385f88ca8e9731487f5"
     },
     "src/hangyeol/primitives/layout.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "e6e5886aee7f712ff4a7b0d1b922aa127d49f0095ffa9a5b94c1ce02eae7f8ec"
     },
     "src/hangyeol/components/list-header.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "adf5f5801f2417cf52351fd452d7ce031c473a6e4c764449e8e99e760b12b242"
     },
     "src/hangyeol/components/list-footer.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "daa76a229dc2649ca6ac35829969df482bf839a59b5cdcbb397ab8fc8222c9ea"
     },
     "src/hangyeol/components/composition.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "aa66029b3e5af943535ec6e18ad99620365c49b9f5f1e05b5a02036d1b35f5ab"
     },
     "src/hangyeol/primitives/confirm.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "1ca7df6fb7a1eab942a3378eb7afe52210f279579276a47e6309d8d1fa4d30b0"
     },
     "src/hangyeol/primitives/container.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "ebb6b04979679aff72d07e00d50e93020acc5f37ed1d52c07ea600d28cb46de0"
     },
     "src/hangyeol/components/formatted-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "94ffd86809fbd6fdb71582cb28f2e790f530f7e16b967e11f10ff9209adfa3c9"
     },
     "src/hangyeol/components/currency-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "fa4bbecd4ffa7f25e1435ebcf8758f3f9827021edaa61e849bee50cff940d583"
     },
     "src/hangyeol/components/search-field.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "938aa6c0a901c28984de3061a0220d15f4f46a9ba9c32b41b69018d702c0dee3"
     },
     "src/hangyeol/primitives/select.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "6fe46fcf28420c35c5a60755fc5560ca3ed10415233781a8c942df6b57ceb033"
     },
     "src/hangyeol/components/pagination.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "ed5d1d145e14fbea4da8e53c4c1a8965197db62e1a71d2ca4e8262efb096b1e9"
     },
     "src/hangyeol/components/data-table.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "872ca80ef7729f40810749f6ddf3c12de378a389517c8dfc97e6ea0a6755d0b8"
     },
     "src/hangyeol/components/date-picker.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "9ecc4e63527812ffb35044f42c35e84b602629dcd59b130ecf0d3a14da33f452"
     },
     "src/hangyeol/components/calendar-grid.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "a0d5aba5d8216bdf9e696d77b4f4f076e3d17f43581b8c4084be8408e6fddae7"
     },
     "src/hangyeol/components/calendar-controls.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "11205b916b34e4f43cfa84dd9a3b940d8c412a8b9775f10779849e33fe70b662"
     },
     "src/hangyeol/lib/date-utils.ts": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "0e0c7949a4a83948dd75d88f71094fa7cc54f89f47b7ce328a0f3661a251dcee"
     },
     "src/hangyeol/components/date-range-picker.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "9699c83b68f3de7087a9d64654d54173ea8d1d89348eba8d9aa1f906d328e398"
     },
     "src/hangyeol/components/time-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "97f910d365db3485e0d94150b9a16e0a0379ef20e9b1363e91ae908a98162b4a"
     },
     "src/hangyeol/components/date-time-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "7ec0da277fe85efd1219a212341fed3f8365b3e83dca0b53ebde507641b79fc2"
     },
     "src/hangyeol/components/drawer.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "2ece6cb5f88aed0f2b62828cc0b7a6be705d5bd2e5253b6115045c22f5babec2"
     },
     "src/hangyeol/components/email-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "95674d322c05bcf005c0eef84deb9415576f52624a96021e6903559d543f9f2c"
     },
     "src/hangyeol/components/file-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "0908da7d6d94c91606e6426f5011b5188dea5f24ee98e0a16771f3fdc073d1c2"
     },
     "src/hangyeol/components/gnb.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "1f2793edebe8739c5a4c77c5823e3e4b954a221f82cccac6b1fe40eb4c4b2982"
     },
     "src/hangyeol/primitives/grid.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c4c1a997890c5fbb42ce39722efdf4bb6985dc784f0ccb70ccf79456d4e5e1de"
     },
     "src/hangyeol/components/grid-list.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "0b4c5c3b8077d386995259ed251ef3501df9559942db0c4cd3a591574a42b4fa"
     },
     "src/hangyeol/primitives/highlight.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "2096aecb3e1c5cae411555ad368c9490e0adcdfd83f48deb2b9206bb4fb66f33"
     },
     "src/hangyeol/primitives/tooltip.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "58ce3c1f67fa423bb677346f2230002b7a49f9aad89e25e92e0c14a671829ce2"
     },
     "src/hangyeol/components/icon-action.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "31537b1098960dfb7836fc307b4ccac1bfb2f44b9732bd5801f0beec58d0fe56"
     },
     "src/hangyeol/components/list-row.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "93069ee9a3e2d366a5557c2faf40b1d5f3d93b2f50fbe7997497730822d8a856"
     },
     "src/hangyeol/components/lnb.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "3522e1d536fc69a1c5fc2b8f149b8f86950733405e46c5a6f2af301371eacda9"
     },
     "src/hangyeol/primitives/loading-spinner.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "fc36ed5bf283f6d9b247300a0fa5c2ef2738d8ac8ad1382a1c19a4d8d31eb02d"
     },
     "src/hangyeol/primitives/menu.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "0ec89fe4d0435254a5be56a5c1466767ff6fe8f50c812285727b1dccc216bc1a"
     },
     "src/hangyeol/components/month-picker.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "6e45706bb486205a3de69f21717b4a19a14fddecf4ab848ee0d7caf08dd4303e"
     },
     "src/hangyeol/components/multi-select.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "95261b3fcea7dcb0f40876dc8868e4e49a56573c54af0cab9b3f1709bb99653c"
     },
     "src/hangyeol/components/number-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "4d1c23105d19048789133cffcbf357af78b8791f39a718e6b490a1911323e3e3"
     },
     "src/hangyeol/components/password-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "72e835cb45cbbd94db468da8cd81c834965520b5eefeb45f3c0097a4443c6758"
     },
     "src/hangyeol/components/phone-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "1cfde19e19dba4b42f5fb2e4671a1cf452b0266cfbb1ab4327eca3b60605fd8b"
     },
     "src/hangyeol/primitives/progress.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "a97f726daf23974bc0b3ee24bef2f80db5ae718b7169eb94d47e26aa62ac7d6b"
     },
     "src/hangyeol/components/progress-stepper.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "71f3f2ae70f06fb801e5e952ab1899723237af4b9106f66391be9a1a44e939ca"
     },
     "src/hangyeol/primitives/radio-group.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "d2b7a8248ea95bdba36defd72fd016f93812e40cb7f01771e308bca18e124e0e"
     },
     "src/hangyeol/components/rating.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "b1e02431a755e2507ac838c351064f4fede84e0e6ab260110b7a1298f54ef245"
     },
     "src/hangyeol/components/result.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "5b03c3e67aff02324ba82c2d56f84acd82656746c91e8b55cb9e0958d829f5f5"
     },
     "src/hangyeol/components/segmented-control.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "c017388ee35e1c7fd06115e067af96e1fcf1933edf0de411b17a92086233af93"
     },
     "src/hangyeol/primitives/separator.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "da1def2ec868fcc10c3c8d7b4ab77a324fddb8776b420efe09f7db8dfa7e2e7b"
     },
     "src/hangyeol/components/shell.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "f8f08093aa7b33c12a117f6153dd828664875d783570a8d4508d11a4e13abdc0"
     },
     "src/hangyeol/primitives/skeleton.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "07f865259794eda90999560d5644de73c4c3cda4d3a8fe70211a66de6ca472dc"
     },
     "src/hangyeol/primitives/slider.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "025b983424847cbdf1242832f30d74a241ff220299a441420a1c69fc737b7b31"
     },
     "src/hangyeol/primitives/switch.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "8d2382362b608f5050ff4ef3c19d52565da75940343751b37ad5fa2686527836"
     },
     "src/hangyeol/primitives/tabs.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "8698b24f2c1a512d01da345bb8294367454517a621f9d43a128bc19a809efd60"
     },
     "src/hangyeol/primitives/textarea.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "d3833194d198f434680b70fcc3376cb91235879d8fa3291172b9271858a6ac74"
     },
     "src/hangyeol/components/toast.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "13f8b93fdada4d673da15c2759dfc888c16940aabb6bd942151fd9751928460b"
     },
     "src/hangyeol/components/brand-mark.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "6027bdd78f8279973396beb3be2f896075b642874e80296c39f457c198bccf59"
     },
     "src/hangyeol/components/brand-mark.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "34658855f7a9c1f1948c89885d424603a30e6b766e0bc6435d539d69b00a01a4"
     },
     "src/hangyeol/components/code-block.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "75ea2f329fb5893a00ebc837151579b61b1e12d2fa37715ce1105f732e4a4478"
     },
     "src/hangyeol/components/code-block.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "ec6695c9eeb66813cc15c44c7475104a523c88780b92fbafc1b5ca85c5f3a8b2"
     },
     "src/hangyeol/lib/code-format.ts": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "58313d0e79f27b461eb68c8eb9c4bd6dc87bf332dd0373e1ba5213d1b5c51a22"
     },
     "src/hangyeol/primitives/visually-hidden.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "b442ed33852ad07f4a26297287cadb1b5cb83fb5b1dac07770b6b43d5ed98ae5"
     },
     "src/hangyeol/primitives/color-input.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "f515ec697290f64e4104ab5d467fab5dd129b0f17eaf3cb07919cfd79df343c4"
     },
     "src/hangyeol/primitives/color-input.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "1264db4884bbb19a5f1432786f98597024ce16c25a523428d8022bb9570e7bc2"
     },
     "src/hangyeol/primitives/control-label.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "b265faaaf5036c6f0c937f43353d2e54bfb6a9a5d032a624b47b0e6214827beb"
     },
     "src/hangyeol/primitives/control-label.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "a9e32a71e5108834f14a0613d72209936638ce71d66f12a33be85f444c74704a"
     },
     "src/hangyeol/primitives/disclosure.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "d11bc0ff724cd09c6716c1e83bf09c1a19d0e30a8a7aae8cb7956e4494d619db"
     },
     "src/hangyeol/primitives/disclosure.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "982b2f69c40414163a36813b53b774a80f67389a532cf259471135984b943937"
     },
     "src/hangyeol/primitives/link.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "19be2700262fcfe51f9ae831968db05d24c59bb823c5408bfa4179dc2aa87d1e"
     },
     "src/hangyeol/primitives/link.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "2f2120a5c7ff75d9bd0c268e787040b185e66cfc9cf3ea2ef1e43d6ce2300ae4"
     },
     "src/hangyeol/primitives/native-select.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "eca36bb211c8241577bffc228ea4b8cc617aa0dd36812d9b514a50b9a10d9fe9"
     },
     "src/hangyeol/primitives/native-select.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "27a0efef6b5eecbc129e528af37fb158c97419abf68caac236e476ef15b908df"
     },
     "src/hangyeol/components/palette-picker.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "d7f6efe3be59276e9d73145dd9b926b2a3142a6ccb593c65ea8c7082fd838c72"
     },
     "src/hangyeol/components/palette-picker.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "bb8dbbb88919fc26a63c8f60d4f25d5dc7a5fe4084b79d090cedccbe98b229d5"
     },
     "src/hangyeol/primitives/preview-surface.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "dddaf2c904b74c8fdadf62bd9f5d937eb35781c3236a561513165645683ad094"
     },
     "src/hangyeol/primitives/preview-surface.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "ddf8b08be388e6197455a11f7cd2236e19342d48d76fb0562d6985007f45b724"
     },
     "src/hangyeol/primitives/specimen.tsx": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "1f813dcb4ff40bb865e61cfa646b08c91d4aeb058b2825a4c674fec78b7e40bb"
     },
     "src/hangyeol/primitives/specimen.css": {
-      "version": "0.1.0-s2.1",
+      "version": "0.0.1",
       "hash": "772733564cd975b01055843444cb45c7acab0446298852a9724d9e1b5aa8106e"
     }
   },
-  "version": "0.1.0-s2.1",
+  "version": "0.0.1",
   "tool": {
-    "package": "hangyeol-core",
-    "version": "0.1.0-s2.1"
+    "package": "@orderthan31/hangyeol-core",
+    "version": "0.0.1"
   },
   "integration": {
     "settings": {

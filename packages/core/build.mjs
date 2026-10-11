@@ -8,8 +8,8 @@ import { hash } from './src/tools/safety.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const target = fileURLToPath(new URL('./', import.meta.url));
 const pkg = JSON.parse(fs.readFileSync(path.join(target, 'package.json')));
-if (pkg.name !== 'hangyeol-core' || pkg.license !== 'UNLICENSED' || pkg.private !== true) {
-  throw Error('CORE-01 package/license boundary requires a private UNLICENSED candidate');
+if (pkg.name !== '@orderthan31/hangyeol-core' || pkg.license !== 'UNLICENSED' || pkg.private !== false || pkg.version !== '0.0.1' || pkg.scripts?.prepublishOnly !== 'node publish-guard.mjs' || pkg.publishConfig?.registry !== 'https://npm.pkg.github.com') {
+  throw Error('CORE-01 package/license boundary requires the guarded scoped UNLICENSED candidate');
 }
 const manifest = buildSlicePayload();
 const provenance = JSON.parse(fs.readFileSync(path.join(target, 'payload/assets/provenance.json')));

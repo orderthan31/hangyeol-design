@@ -3,7 +3,7 @@
 <a id="core11-quickstart"></a>
 ## 현재 quickstart — installed core → editable source (CORE-11)
 
-현재 소비 경로는 private/UNLICENSED `hangyeol-core`를 devDependency로 설치한 뒤 로컬 bin으로 source를 생성하는 방식입니다. 공개 배포나 라이선스 부여를 뜻하지 않습니다.
+현재 소비 경로는 guarded/UNLICENSED `@orderthan31/hangyeol-core`를 devDependency로 설치한 뒤 로컬 bin으로 source를 생성하는 방식입니다. 공개 배포나 라이선스 부여를 뜻하지 않습니다.
 
 ### 1. 실제 tarball과 독립 host 준비
 
@@ -83,7 +83,7 @@ npm install --save-dev --save-exact "$CORE_TGZ" --cache "$NPM_CACHE" --offline -
 ```
 
 `package.json`의 core는 exact `file:` devDependency이며 package-lock의 version/resolved/SRI와
-물리 `node_modules/hangyeol-core`, local bin을 대응해 보관합니다. UI가 core를 runtime
+물리 `node_modules/@orderthan31/hangyeol-core`, local bin을 대응해 보관합니다. UI가 core를 runtime
 import하는 모델이 아닙니다. 설치 명령 이후 `hangyeol.json`/생성 UI가 아직 없음을 확인합니다.
 
 ### 2. installed local bin으로만 init/add
@@ -100,7 +100,7 @@ import하는 모델이 아닙니다. 설치 명령 이후 `hangyeol.json`/생성
 ./node_modules/.bin/hangyeol doctor
 ```
 
-`hangyeol`이 실제 bin이고 현재 후보 version은 `0.1.0-s2.1`입니다. 기본 sourceRoot는
+`hangyeol`이 실제 bin이고 현재 후보 version은 `0.0.1`입니다. 기본 sourceRoot는
 `src/hangyeol`, entry CSS는 `src/hangyeol.css`, font binary/라이선스/provenance는
 `public/fonts/hangyeol`입니다. `text-field`는 선택 closure인 Button/Input/FormField도 설치합니다.
 별도 컴포넌트를 추가할 때는 지원 registry graph를 확인하며 과거 75개를 현재 core 지원

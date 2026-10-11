@@ -10,7 +10,7 @@ export function openBoundary(root) {
   const pkg = readJSON(path.join(root, 'package.json'));
   const manifest = readJSON(path.join(root, 'payload/manifest.json'));
   const tools = readJSON(path.join(root, 'dist/tool-manifest.json'));
-  if (pkg.name !== 'hangyeol-core' || manifest.package !== pkg.name || tools.package !== pkg.name) {
+  if (pkg.name !== '@orderthan31/hangyeol-core' || manifest.package !== pkg.name || tools.package !== pkg.name) {
     throw Error('Core payload/tool package ownership mismatch');
   }
   if (manifest.version !== pkg.version || tools.version !== pkg.version) {

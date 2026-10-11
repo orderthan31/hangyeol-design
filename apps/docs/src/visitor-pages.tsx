@@ -42,7 +42,7 @@ export function App() {
       <section className="docs-section">
         <h2>설치 방식 이해하기</h2>
         <p className="text-g-soft leading-7">
-          <code>hangyeol-core</code>는 컴포넌트 소스를 설치하고 검사하는 개발 도구입니다.
+          <code>@orderthan31/hangyeol-core</code>는 컴포넌트 소스를 설치하고 검사하는 개발 도구입니다.
           패키지를 설치한 뒤 <code>init</code>으로 테마 CSS·글꼴·설정을 준비하고,{' '}
           <code>add</code>로 필요한 컴포넌트를 추가합니다. 화면에서는 core 자체가 아니라
           프로젝트에 설치된 로컬 소스를 import합니다.
@@ -88,7 +88,7 @@ export function App() {
           현재 안내는 전달받은 패키지 파일로 설치하는 방식입니다. 파일 경로는 실제로 받은
           파일의 위치로 바꿔 주세요. 설치만으로 UI 소스가 생성되지는 않습니다.
         </p>
-        <CodeBlock language="Shell">{`npm install --save-dev --save-exact ./hangyeol-core-0.1.0-s2.1.tgz\n${cli} --version\n${cli} --help`}</CodeBlock>
+        <CodeBlock language="Shell">{`npm install --save-dev --save-exact ./orderthan31-hangyeol-core-0.0.1.tgz\n${cli} --version\n${cli} --help`}</CodeBlock>
         <p className="text-g-small text-g-soft">
           GitHub Packages를 이용할 때는 별도로 안내된 배포 이름·버전·scope의 레지스트리
           설정과 인증이 필요합니다. GitHub Packages의 공개 npm 패키지도 설치 인증이

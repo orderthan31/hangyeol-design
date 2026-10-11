@@ -3,7 +3,7 @@
 CORE-07 activates `./node_modules/.bin/hangyeol lint` in an initialized physical
 consumer. `lint inspect` remains inspection-only and keeps its dependency array
 API. No consumer runtime imports core. The non-executing selector parser is a
-pinned tooling dependency; core and first-party policy remain private/UNLICENSED.
+pinned tooling dependency; core and first-party policy remain guarded/UNLICENSED.
 
 ## Scope and ownership
 

@@ -5,12 +5,12 @@ host configuration/source modules, synchronize templates, or implement update.
 Use the physically installed development package and its local executable:
 
 ```sh
-npm install --offline --ignore-scripts --save-dev --save-exact ../scratch/hangyeol-core-0.1.0-s2.1.tgz
+npm install --offline --ignore-scripts --save-dev --save-exact ../scratch/orderthan31-hangyeol-core-0.0.1.tgz
 ./node_modules/.bin/hangyeol --version
 ./node_modules/.bin/hangyeol doctor
 ```
 
-The filename must come from an actual local pack. This private `UNLICENSED`
+The filename must come from an actual local pack. This guarded `UNLICENSED`
 candidate is not a registry/Release quickstart or a public license grant.
 Installing the tool generates no UI; `init` and `add` remain explicit operations.
 Prepared-cache installation evidence does not prove empty-cache/VPS portability.
@@ -30,7 +30,7 @@ After the boundary opens, stdout is JSON:
   "readOnly": true,
   "status": "ok",
   "exit": 0,
-  "package": {"name": "hangyeol-core", "version": "0.1.0-s2.1", "integrity": "verified"},
+  "package": {"name": "@orderthan31/hangyeol-core", "version": "0.0.1", "integrity": "verified"},
   "config": {"sourceRoot": "ui/system", "stylePath": "styles/theme.css", "publicRoot": "static", "fontPath": "assets/type", "basePath": "/design/", "alias": "@hangyeol"},
   "capabilities": {"repair": false, "update": false},
   "checks": []
@@ -140,7 +140,7 @@ under arbitrary compiler flags. Run the consumer compiler/build separately.
 `tailwind-merge@3.7.0`. Existing semantic font-size/radius/padding conflict groups
 and public `ClassValue` composition behavior remain unchanged. UI modules import
 this local helper and the required React/Radix dependencies, never installed core
-runtime code. `hangyeol-core` owns development tools/installer/payload, not the
+runtime code. `@orderthan31/hangyeol-core` owns development tools/installer/payload, not the
 consumer UI implementation.
 
 A changed source/helper/theme hash gives `source.edited` / `info`, not automatic

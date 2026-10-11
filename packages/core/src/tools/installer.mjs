@@ -9,9 +9,10 @@ const payload=payloadRoot;
 const manifest=JSON.parse(fs.readFileSync(path.join(payload,'manifest.json')));
 const args=[...inputArgs],command=args.shift();
 const overwrite=args.includes('--overwrite'),dryRun=args.includes('--dry-run');
+const migrate=args.includes('--migrate-from-unscoped');
 const settingsFlags={'--source-root':'sourceRoot','--style-path':'stylePath','--public-root':'publicRoot','--font-path':'fontPath','--base-path':'basePath','--alias':'alias'};
 const options={},components=[];
-function parseArgs(){const seen=new Set();for(let i=0;i<args.length;i++){const arg=args[i];if(!arg.startsWith('--')){components.push(arg);continue;}if(seen.has(arg))throw Error(`Duplicate flag: ${arg}`);seen.add(arg);if(['--dry-run','--overwrite'].includes(arg))continue;const key=settingsFlags[arg];if(!key)throw Error(`Unknown flag: ${arg}`);const value=args[++i];if(!value||value.startsWith('--'))throw Error(`Missing value for ${arg}`);options[key]=value;}if(command==='init'&&components.length)throw Error('init does not add components; use add separately');}
+function parseArgs(){const seen=new Set();for(let i=0;i<args.length;i++){const arg=args[i];if(!arg.startsWith('--')){components.push(arg);continue;}if(seen.has(arg))throw Error(`Duplicate flag: ${arg}`);seen.add(arg);if(['--dry-run','--overwrite','--migrate-from-unscoped'].includes(arg))continue;const key=settingsFlags[arg];if(!key)throw Error(`Unknown flag: ${arg}`);const value=args[++i];if(!value||value.startsWith('--'))throw Error(`Missing value for ${arg}`);options[key]=value;}if(command==='init'&&components.length)throw Error('init does not add components; use add separately');}
 const settingKeys=Object.values(settingsFlags);
 const viteConfigs=['vite.config.js','vite.config.mjs','vite.config.ts','vite.config.cjs','vite.config.mts','vite.config.cts'];
 function settings(config){return Object.fromEntries(settingKeys.map(key=>[key,config[key]]));}
@@ -96,7 +97,8 @@ try{
  for(const [key,value] of Object.entries(options))if(previous&&config[key]!==value)throw Error(`Flag ${key} conflicts with hangyeol.json; changing installed settings is outside init/add`);
  if(config.schemaVersion!==1||!config.installed||typeof config.installed!=='object'||Array.isArray(config.installed)||config.components&&!Array.isArray(config.components))throw Error('Unsupported/invalid hangyeol.json schema or install records');
  if(config.integration&&JSON.stringify(settings(config.integration.settings||{}))!==JSON.stringify(settings(config)))throw Error('hangyeol.json conflicts with installed integration settings; no update/migration engine');
- if(config.tool&&(config.tool.package!==manifest.package||config.tool.version!==manifest.version))throw Error('Installed tool/version conflicts with this payload; no update engine');
+ if(migrate && (command!=='init' || overwrite || !previous || config.tool?.package!=='hangyeol-core' || config.tool?.version!=='0.1.0-s2.1' || config.version!=='0.1.0-s2.1' || manifest.package!=='@orderthan31/hangyeol-core' || manifest.version!=='0.0.1'))throw Error('Migration requires unchanged unscoped 0.1.0-s2.1 to scoped 0.0.1, init only, no overwrite');
+ if(!migrate&&config.tool&&(config.tool.package!==manifest.package||config.tool.version!==manifest.version))throw Error('Installed tool/version conflicts with this payload; no update engine');
  for(const key of ['sourceRoot','stylePath','publicRoot','fontPath']){
    if(typeof config[key]!=='string'||!/^[a-zA-Z0-9_./-]+$/.test(config[key]))throw Error(`Unsafe configurable path: ${key}`);
    const parts=config[key].split('/').map(part=>part.toLowerCase());
@@ -113,6 +115,23 @@ try{
  const requested=command==='add'?components:[];
  if(command==='add'&&!requested.length)throw Error('Specify at least one component');
  const result=command==='init'?buildInit(root,config):sourceFiles(config,requested);
+ // Explicit identity-only migration. Re-plan verified canonical bytes, never adopt
+ // edited files or rewrite hashes by hand. Existing transaction backs up metadata.
+ if(migrate){
+   const expected=new Map(result.files.map(f=>[f.path,f]));
+   for(const name of config.components||[]){
+     if(!Object.hasOwn(manifest.items,name))throw Error('Migration has unknown selection');
+   }
+   for(const file of sourceFiles(config,config.components||[]).files)expected.set(file.path,file);
+   for(const [name,record] of Object.entries(config.installed)){
+     const file=expected.get(name);
+     const local=fs.readFileSync(safeTarget(root,name));
+     if(!file || record.version!=='0.1.0-s2.1' || hash(local)!==record.hash || hash(file.bytes)!==record.hash)throw Error(`Migration conflict: edited or incompatible owner ${name}`);
+   }
+   if([...expected.keys()].some(name=>!config.installed[name]))throw Error('Migration requires complete ownership records');
+   result.files=[...expected.values()];
+ }
+
  // All source+metadata+host integration paths/collisions/hashes are planned before ANY write or npm action.
  const sourcePlan=planFiles(root,result.files.map(f=>{if(f.integrate){const full=safeTarget(root,f.path);return {...f,previous:fs.existsSync(full)?hash(fs.readFileSync(full)):undefined};}return f;}),{overwrite});
  for(const file of sourcePlan)if(file.preserve&&file.action!=='noop')throw Error(`conflict: common source changed while planning ${file.path}; retry after reviewing local edits`);

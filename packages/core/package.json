@@ -1,7 +1,7 @@
 {
-  "name": "hangyeol-core",
-  "version": "0.1.0-s2.1",
-  "private": true,
+  "name": "@orderthan31/hangyeol-core",
+  "version": "0.0.1",
+  "private": false,
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
@@ -17,7 +17,8 @@
     "README.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "publish-guard.mjs"
+    "publish-guard.mjs",
+    "publication-readiness.json"
   ],
   "scripts": {
     "build": "node build.mjs",
@@ -63,5 +64,13 @@
     "react-is": "19.2.0",
     "recharts": "3.10.1",
     "tailwind-merge": "3.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orderthan31/hangyeol-design.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

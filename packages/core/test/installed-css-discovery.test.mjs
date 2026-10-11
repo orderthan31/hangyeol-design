@@ -13,7 +13,7 @@ const evidence = process.env.CORE07_EVIDENCE_DIR;
 const repo = fileURLToPath(new URL('../../../', import.meta.url));
 assert.ok(host && path.isAbsolute(host) && !path.resolve(host).startsWith(repo));
 assert.ok(evidence && path.isAbsolute(evidence) && !path.resolve(evidence).startsWith(repo));
-const installed = path.join(host, 'node_modules/hangyeol-core');
+const installed = path.join(host, 'node_modules/@orderthan31/hangyeol-core');
 const bin = path.join(host, 'node_modules/.bin/hangyeol');
 assert.equal(fs.lstatSync(installed).isSymbolicLink(), false);
 assert.equal(fs.realpathSync(bin), path.join(installed, 'bin/hangyeol.mjs'));

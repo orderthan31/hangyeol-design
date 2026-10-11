@@ -1,5 +1,7 @@
 # Historical CORE-01 package checkpoint
 
+Current identity: `@orderthan31/hangyeol-core@0.0.1`, guarded and UNLICENSED. The unscoped commands and private flag below are historical only; use the current core README and GitHub Packages maintainer guide.
+
 This historical checkpoint describes the original introduction of core, not the current workspace topology or tool feature set. Current ownership, commands, and supported tools are documented in [the core README](../packages/core/README.md). The current collector has one core owner and no legacy CLI/registry output.
 
 # S2 CORE-01: installed core package boundary

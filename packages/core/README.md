@@ -1,6 +1,6 @@
-# hangyeol-core — local candidate
+# @orderthan31/hangyeol-core — local candidate
 
-This private installed development package owns the executable, tool router,
+This guarded installed development package owns the executable, tool router,
 shared installer/safety implementation, and same-version canonical source/font
 payload. It is not a runtime UI dependency. Generated UI imports local source.
 
@@ -8,6 +8,25 @@ First-party code and UI payload are `UNLICENSED`; no repository license grant wa
 found or invented. The font assets retain the copied SIL OFL 1.1 license and
 original upstream provenance. See LICENSE and THIRD_PARTY_NOTICES.md. Publication
 is blocked. This is not a Release download or registry quickstart.
+
+## Candidate identity and publication safety
+
+The current candidate is `@orderthan31/hangyeol-core@0.0.1`; npm pack emits
+`orderthan31-hangyeol-core-0.0.1.tgz`. The bin remains `hangyeol`, and consumer
+`src/hangyeol` / `@hangyeol` source aliases do not become npm account scopes.
+Core has `private:false` only with an active fail-closed prepublish guard;
+root and Docs remain private. This does not change registry visibility or licensing.
+The manual-only GitHub Packages workflow defaults to validation, not publication.
+Actual publication remains blocked by `publication-readiness.json` pending the
+later all-component border/description and approved-brand introduction review,
+and by the existing global lint failure. See the repository maintainer guide
+`docs/github-packages-publishing.md`. Nothing here claims registry publication.
+
+An unchanged previous unscoped 0.1.0-s2.1 installation can be explicitly reviewed
+with `hangyeol init --migrate-from-unscoped --dry-run`, then the same command
+without `--dry-run`. It only re-records fully verified byte-identical owners;
+edited/missing/unknown owners fail before writes. No overwrite or general update
+is supported. Metadata uses the normal backed-up installer transaction.
 
 ## Current installed-core quickstart (CORE-11)
 
@@ -27,8 +46,8 @@ not reset by read-only tools. Browser acceptance remains separate from the core/
 `src/ui` owns reusable UI, `src/tools` owns installer/safety/host configuration and the other tools, `registry/items.json` owns the selected dependency graph, and `assets/fonts` owns unmodified fonts/licenses. There is no separate CLI/UI workspace or legacy registry output. Build/prepack copies only the declared tool/payload boundary.
 
 ```sh
-npm run build -w hangyeol-core
-npm pack --workspace=hangyeol-core --pack-destination=/your/external/artifacts
+npm run build -w @orderthan31/hangyeol-core
+npm pack --workspace=@orderthan31/hangyeol-core --pack-destination=/your/external/artifacts
 ```
 
 Install the actual emitted tarball as an exact devDependency in a supported React/Vite host. Installing core does not generate UI. Run that host's `node_modules/.bin/hangyeol init` and `add` explicitly. Defaults are `hangyeol.json`, `src/hangyeol`, `src/hangyeol.css`, and `public/fonts/hangyeol`. Editable source is never silently overwritten.

@@ -1,19 +1,19 @@
 # Installed core init contract (CORE-02)
 
-This local candidate supports a bounded React 19 / Vite / Tailwind 4 host. CORE-01's independent VPS offline installation remains unpassed. Prepared Mac-cache checks do not establish empty-cache portability, release availability or publication approval. First-party code is private and `UNLICENSED`; bundled unmodified Pretendard retains its actual SIL OFL 1.1 license and provenance. No new license grant is made.
+This local candidate supports a bounded React 19 / Vite / Tailwind 4 host. CORE-01's independent VPS offline installation remains unpassed. Prepared Mac-cache checks do not establish empty-cache portability, release availability or publication approval. First-party code is guarded and `UNLICENSED`; bundled unmodified Pretendard retains its actual SIL OFL 1.1 license and provenance. No new license grant is made.
 
 ## Local package and executable
 
 Pack the workspace into an owner-designated directory outside the repository, then install that actual tarball:
 
 ```sh
-npm pack --workspace=hangyeol-core --pack-destination="$CORE02_EVIDENCE_DIR"
-npm install --offline --save-dev --save-exact ./artifacts/hangyeol-core-0.1.0-s2.1.tgz
+npm pack --workspace=@orderthan31/hangyeol-core --pack-destination="$CORE02_EVIDENCE_DIR"
+npm install --offline --save-dev --save-exact ./artifacts/orderthan31-hangyeol-core-0.0.1.tgz
 ./node_modules/.bin/hangyeol --version
 ./node_modules/.bin/hangyeol init --dry-run
 ```
 
-The illustrative relative artifact location must point to the file actually packed. Use the installed local executable, without a registry fallback. Installation retains a physical `hangyeol-core` devDependency and lock entry; it does not generate UI through postinstall. Tools live in node_modules; editable UI does not import core at runtime. The candidate version stays aligned with the package, tool manifest and source payload; there is no release/version change in CORE-02.
+The illustrative relative artifact location must point to the file actually packed. Use the installed local executable, without a registry fallback. Installation retains a physical `@orderthan31/hangyeol-core` devDependency and lock entry; it does not generate UI through postinstall. Tools live in node_modules; editable UI does not import core at runtime. The candidate version stays aligned with the package, tool manifest and source payload; there is no release/version change in CORE-02.
 
 ## Settings and generated files
 
@@ -57,9 +57,9 @@ Scoped source tests retain the owner's initial conflict assertion. Packed tests 
 
 ```sh
 # Set both evidence variables to the same designated outside-repo directory.
-CORE01_EVIDENCE_DIR="$CORE02_EVIDENCE_DIR" npm test --workspace=hangyeol-core
+CORE01_EVIDENCE_DIR="$CORE02_EVIDENCE_DIR" npm test --workspace=@orderthan31/hangyeol-core
 # Separate actual HTTP assertion; requires permitted loopback listening.
-npm run test:init:http --workspace=hangyeol-core
+npm run test:init:http --workspace=@orderthan31/hangyeol-core
 ```
 
 The HTTP test remains a real assertion of URL/status/MIME/font bytes, separate from package/build verification. Historically, the implementation sandbox returned `EPERM` for both Vite preview and a minimal Node server. The owner subsequently reported independent prior-candidate and fix-cycle-1 runs passing all four production font URLs with status 200, MIME and byte/hash checks. Those results are distinct from the sandbox failure and do not establish correctness when public asset copying is disabled. The cycle-1 source re-review confirmed its four blockers fixed but found acceptance of `build.copyPublicDir: false`; cycle 2 records actual source and physically installed RED/GREEN regressions for that case and disabled disk writes. A subsequent independent source review found aliases able to intercept the mandatory Tailwind CSS imports. Cycle 3 records source and physical installed preflight RED/GREEN for all three alias names, full byte/mtime snapshots and zero npm calls; near-prefix and normal UI aliases remain compatible. The owner's source-only validator acceptance and separate Node 24 resolver-only probe are distinct evidence; neither is a substituted-stylesheet compiler/build result. Cycles 2 and 3 do not repeat prohibited listener attempts. Owner independent re-review, fresh-candidate runtime/HTTP and frozen verification remain pending. Browser FontFace loading is NOT RUN; copied historical font provenance is not new verification. Browser/AT/accessibility/design acceptance, independent VPS/empty-cache installation, GitHub Packages download and publication remain owner work or deferred scope. Consumer lint/token policy is unchanged and deferred beyond CORE-01 inspections.

@@ -34,20 +34,20 @@ test('external host retains core as a pinned devDependency and runs only its ins
   run('install', 'npm', ['install', '--offline', '--save-dev', '--save-exact', artifact.tarball], host);
   const pkg = JSON.parse(fs.readFileSync(path.join(host, 'package.json')));
   const lock = JSON.parse(fs.readFileSync(path.join(host, 'package-lock.json')));
-  assert.ok(pkg.devDependencies['hangyeol-core']);
-  assert.ok(pkg.devDependencies['hangyeol-core'].startsWith('file:'), 'Local tarball is pinned, not a floating registry range');
-  assert.ok(!pkg.dependencies['hangyeol-core']);
-  assert.equal(lock.packages['node_modules/hangyeol-core'].version, artifact.version);
-  assert.equal(lock.packages['node_modules/hangyeol-core'].dev, true);
-  assert.equal(lock.packages[''].devDependencies['hangyeol-core'], pkg.devDependencies['hangyeol-core']);
-  const installed = path.join(host, 'node_modules/hangyeol-core');
+  assert.ok(pkg.devDependencies['@orderthan31/hangyeol-core']);
+  assert.ok(pkg.devDependencies['@orderthan31/hangyeol-core'].startsWith('file:'), 'Local tarball is pinned, not a floating registry range');
+  assert.ok(!pkg.dependencies['@orderthan31/hangyeol-core']);
+  assert.equal(lock.packages['node_modules/@orderthan31/hangyeol-core'].version, artifact.version);
+  assert.equal(lock.packages['node_modules/@orderthan31/hangyeol-core'].dev, true);
+  assert.equal(lock.packages[''].devDependencies['@orderthan31/hangyeol-core'], pkg.devDependencies['@orderthan31/hangyeol-core']);
+  const installed = path.join(host, 'node_modules/@orderthan31/hangyeol-core');
   assert.ok(!fs.lstatSync(installed).isSymbolicLink(), 'External core must be physical, not a workspace link');
   assert.ok(!fs.existsSync(path.join(host, 'src')), 'Package install must not generate UI');
   const bin = path.join(host, 'node_modules/.bin/hangyeol');
   assert.equal(fs.realpathSync(bin), path.join(installed, corePackage.bin.hangyeol));
   assert.equal(run('version', bin, ['--version'], host).trim(), artifact.version);
   const inspect = JSON.parse(run('inspect', bin, ['inspect'], host));
-  assert.equal(inspect.package, 'hangyeol-core');
+  assert.equal(inspect.package, '@orderthan31/hangyeol-core');
   assert.equal(inspect.integrity, 'verified');
   const packedManifest = path.join(installed, 'payload/manifest.json');
   const manifestBytes = fs.readFileSync(packedManifest);
@@ -69,7 +69,7 @@ test('external host retains core as a pinned devDependency and runs only its ins
   run('add', bin, ['add', 'button'], host);
   run('add-noop', bin, ['add', 'button'], host);
   const config = JSON.parse(fs.readFileSync(path.join(host, 'hangyeol.json')));
-  assert.deepEqual(config.tool, { package: 'hangyeol-core', version: artifact.version });
+  assert.deepEqual(config.tool, { package: '@orderthan31/hangyeol-core', version: artifact.version });
   for (const [source, record] of Object.entries(manifest.files)) {
     const target = path.join(host, 'src/hangyeol', source);
     if (fs.existsSync(target)) assert.equal(digest(fs.readFileSync(target)), record.hash);
@@ -117,21 +117,21 @@ test('external host retains core as a pinned devDependency and runs only its ins
   fs.writeFileSync(theme, original);
   const finalPackage = JSON.parse(fs.readFileSync(path.join(host, 'package.json')));
   const finalLock = JSON.parse(fs.readFileSync(path.join(host, 'package-lock.json')));
-  const finalCoreRecord = finalLock.packages['node_modules/hangyeol-core'];
+  const finalCoreRecord = finalLock.packages['node_modules/@orderthan31/hangyeol-core'];
   assert.equal(finalCoreRecord.version, artifact.version);
   assert.equal(finalCoreRecord.dev, true);
-  assert.equal(finalCoreRecord.integrity, lock.packages['node_modules/hangyeol-core'].integrity);
+  assert.equal(finalCoreRecord.integrity, lock.packages['node_modules/@orderthan31/hangyeol-core'].integrity);
   assert.match(finalCoreRecord.integrity, /^sha512-/);
-  assert.equal(finalCoreRecord.resolved, lock.packages['node_modules/hangyeol-core'].resolved);
+  assert.equal(finalCoreRecord.resolved, lock.packages['node_modules/@orderthan31/hangyeol-core'].resolved);
   assert.match(finalCoreRecord.resolved, /^file:/);
-  assert.equal(finalLock.packages[''].devDependencies['hangyeol-core'], finalPackage.devDependencies['hangyeol-core']);
-  assert.equal(finalPackage.devDependencies['hangyeol-core'], pkg.devDependencies['hangyeol-core']);
+  assert.equal(finalLock.packages[''].devDependencies['@orderthan31/hangyeol-core'], finalPackage.devDependencies['@orderthan31/hangyeol-core']);
+  assert.equal(finalPackage.devDependencies['@orderthan31/hangyeol-core'], pkg.devDependencies['@orderthan31/hangyeol-core']);
   assert.ok(!finalPackage.dependencies['recharts']);
   assert.ok(!finalPackage.dependencies['react-is']);
   const installedModules = fs.readFileSync(path.join(installed, 'dist/router.mjs'), 'utf8');
   assert.ok(!installedModules.includes('packages/cli') && !installedModules.includes('scripts/'));
   fs.writeFileSync(path.join(evidence, 'external-host.json'), JSON.stringify({
-    host, localBin: bin, coreDevDependency: pkg.devDependencies['hangyeol-core'],
+    host, localBin: bin, coreDevDependency: pkg.devDependencies['@orderthan31/hangyeol-core'],
     installedVersion: finalCoreRecord.version, finalCoreLockRecord: finalCoreRecord,
     lockRetained: true, physicalCorePackage: true, noPostinstallGeneration: true,
     payloadVersion: manifest.version, sourceClosure: config.components,

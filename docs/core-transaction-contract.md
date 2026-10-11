@@ -1,6 +1,6 @@
 # Core transaction contract
 
-CORE-06 applies to the shared installer and safety implementation in `packages/core/src/tools`. The core build collects those files into the packed tool boundary; there is no second installer implementation. First-party package licensing remains private/UNLICENSED; bundled font licensing and provenance are unchanged.
+CORE-06 applies to the shared installer and safety implementation in `packages/core/src/tools`. The core build collects those files into the packed tool boundary; there is no second installer implementation. First-party package licensing remains guarded/UNLICENSED; bundled font licensing and provenance are unchanged.
 
 ## Preflight and no-op
 

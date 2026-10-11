@@ -265,7 +265,7 @@ auto-download, migration, hidden source refresh or update command was added here
 ## Evidence and limitations
 
 The implementation uses exact existing PostCSS 8.5.28 (MIT); package dependency
-pins, license/private UNLICENSED boundary and legacy 107 identifiers are unchanged.
+pins, license/guarded UNLICENSED boundary and legacy 107 identifiers are unchanged.
 PostCSS parses consumer CSS; the token policy performs bounded static type/value
 syntax and alias graph checks. It does **not** call a CSS/browser value evaluator
 or Tailwind compiler. Color-function internals, all named color validity, unusual

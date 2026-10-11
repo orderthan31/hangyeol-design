@@ -7,7 +7,7 @@ TextField 요청은 기존 canonical registry의 `text-field → input, button` 
 소비자는 실제 로컬 tarball을 정확한 devDependency로 설치하고 물리적 `node_modules/.bin/hangyeol`을 실행합니다. registry fallback, workspace 링크, unpacked bin 대체 실행을 사용하지 않습니다.
 
 ```sh
-npm pack --workspace=hangyeol-core --pack-destination=<external-artifact-directory>
+npm pack --workspace=@orderthan31/hangyeol-core --pack-destination=<external-artifact-directory>
 # React 19 / Vite / Tailwind 4 소비자 호스트에서 실제 생성 경로 사용:
 npm install --offline --save-dev --save-exact <actual-tarball-path>
 ./node_modules/.bin/hangyeol init
@@ -15,7 +15,7 @@ npm install --offline --save-dev --save-exact <actual-tarball-path>
 ./node_modules/.bin/hangyeol add text-field
 ```
 
-초기화와 추가는 별도입니다. 설치 자체에 UI postinstall 생성은 없습니다. 실제 core 버전, resolved tarball 및 SHA512 integrity는 소비자의 package/lock에 남습니다. 준비된 offline 캐시 조건이며 빈 캐시 또는 독립 VPS 다운로드 성공을 의미하지 않습니다. private `UNLICENSED` 후보에 공개 다운로드/라이선스 부여를 주장하지 않습니다.
+초기화와 추가는 별도입니다. 설치 자체에 UI postinstall 생성은 없습니다. 실제 core 버전, resolved tarball 및 SHA512 integrity는 소비자의 package/lock에 남습니다. 준비된 offline 캐시 조건이며 빈 캐시 또는 독립 VPS 다운로드 성공을 의미하지 않습니다. guarded `UNLICENSED` 후보에 공개 다운로드/라이선스 부여를 주장하지 않습니다.
 
 `sourceRoot` 아래 TextField UI 파일은 정확히 다음 다섯 개입니다.
 

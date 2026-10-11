@@ -1,0 +1,75 @@
+name: Validate and manually publish core
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish only after all release gates are closed
+        type: boolean
+        required: true
+        default: false
+      confirmation:
+        description: Exact approved package identity (empty validates only)
+        type: string
+        required: false
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: publish-core
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22.22.2'
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run build
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm pack --workspace=@orderthan31/hangyeol-core --json --pack-destination="$RUNNER_TEMP"
+      # No waiver for the existing global lint baseline.
+      - run: npm run lint:slice
+  publish:
+    needs: validate
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.repository == 'orderthan31/hangyeol-design' &&
+      github.ref == 'refs/heads/main' &&
+      inputs.publish == true &&
+      inputs.confirmation == '@orderthan31/hangyeol-core@0.0.1'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22.22.2'
+          package-manager-cache: false
+          registry-url: https://npm.pkg.github.com
+          scope: '@orderthan31'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run build
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint:slice
+      - name: Publish guarded candidate (currently blocked by readiness)
+        working-directory: packages/core
+        run: npm publish --registry=https://npm.pkg.github.com --ignore-scripts=false
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HANGYEOL_PUBLISH: ${{ inputs.publish }}
+          HANGYEOL_CONFIRM: ${{ inputs.confirmation }}
+          npm_config_registry: https://npm.pkg.github.com
+          npm_config_ignore_scripts: 'false'
