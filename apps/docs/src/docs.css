@@ -1,7 +1,6 @@
 /* Document layout only. Component appearance belongs to the shared sources. */
 html { scroll-behavior: smooth; }
 body { margin: 0; }
-.docs-shell { min-width: 0; }
 .docs-header { max-width: 1280px; margin: 0 auto; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid color-mix(in srgb, var(--g-line) 25%, transparent); }
 .docs-header-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .docs-layout { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 240px minmax(0, 1fr); }
@@ -18,7 +17,6 @@ body { margin: 0; }
 .docs-section { display: grid; gap: 24px; }
 .docs-section > h2, .docs-section-title > h2 { font-size: 20px; font-weight: 600; line-height: 1.4; letter-spacing: -.025em; }
 .docs-section-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.docs-tab-content { display: grid; align-content: start; gap: 16px; padding-top: 24px; min-width: 0; }
 .docs-vertical-tabs { display: grid; grid-template-columns: 144px minmax(0,1fr); gap: 24px; }
 .docs-vertical-tabs > [role=tabpanel] { padding-top: 0; }
 .docs-specs { display: grid; gap: 12px; margin: 0; }

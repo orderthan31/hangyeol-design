@@ -1,3 +1,4 @@
+import './docs.css';
 import { PalettePicker } from './hangyeol/components/palette-picker';
 import { SkipLink, Link, NavigationGroupLabel, NavigationLink, LinkFocusScope } from './hangyeol/primitives/link';
 import { useEffect, useId, useRef, useState, type MouseEvent } from 'react';
@@ -59,7 +60,7 @@ export default function DocsApp() {
  };
  const query=search.trim().toLocaleLowerCase();
  const match=(name:Page)=>`${labels[name]} ${name} ${foundationDescriptions[name as FoundationName]??componentDescriptions[name as ComponentName]??controlDescriptions[name as ControlName]??inputDescriptions[name as InputName]??selectionDescriptions[name as SelectionName]??nativeDescriptions[name as NativeName]??interactionDescriptions[name as InteractionName]??dateDataDescriptions[name as DateDataName]??''}`.toLocaleLowerCase().includes(query);
- return <Theme mode={mode} palette={palette} className="docs-shell min-h-screen">
+ return <Theme mode={mode} palette={palette} className="min-w-0 min-h-screen">
   <SkipLink href="#docs-main"  onClick={event=>{event.preventDefault();document.getElementById('docs-main')?.focus();}}>본문으로 바로 가기</SkipLink>
   <header className="docs-header">
    <Link variant="brand" href="#Overview"  aria-label="한결디자인 소개" onClick={navigate}><BrandCI decorative/></Link>

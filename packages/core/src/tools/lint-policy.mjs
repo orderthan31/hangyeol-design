@@ -4,7 +4,7 @@ import {pathToFileURL} from 'node:url';
 import {createRequire} from 'node:module';
 import {safeTarget} from './safety.mjs';
 import postcss from 'postcss';
-import {inlinePropertyOwnership} from './lint-css.mjs';
+import {inlinePropertyOwnership,canonicalOwner} from './lint-css.mjs';
 
 export function walk(node,visit){if(!node||typeof node!=='object')return;visit(node);for(const [key,value] of Object.entries(node))if(!['parent','loc','range','tokens','comments'].includes(key)){if(Array.isArray(value))for(const child of value)walk(child,visit);else if(value&&typeof value==='object')walk(value,visit);}}
 export function staticClasses(ast){
@@ -16,7 +16,7 @@ export function staticClasses(ast){
 }
 const escapeRegExp=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 export async function consumerPolicy(boundary,config,relative,ast,semantic={colors:[],text:[]},css){
- const {sliceConfig}=await import(pathToFileURL(path.join(boundary.root,'dist/policy/slice-eslint-policy.mjs')));
+ const {sliceConfig,geometryClasses}=await import(pathToFileURL(path.join(boundary.root,'dist/policy/slice-eslint-policy.mjs')));
  const {default:ds}=await import(pathToFileURL(path.join(boundary.root,'dist/policy/design-jsx-policy.mjs')));
  const base=sliceConfig[0],rules={...base.rules},imports=[];
  for(const node of ast.body)if(node.type==='ImportDeclaration'){
@@ -26,8 +26,9 @@ export async function consumerPolicy(boundary,config,relative,ast,semantic={colo
   if(target&&Object.keys(boundary.manifest.files).some(name=>name.replace(/\.(tsx?|css)$/,'')===target.replace(/\.(tsx?|css)$/,''))&&/^(?:primitives|components|foundation)\//.test(target))imports.push('^'+escapeRegExp(value)+'$');
  }
  const owners=sliceConfig[1].files.filter(p=>p.startsWith('packages/core/src/ui/')).map(p=>p.slice('packages/core/src/ui/'.length));
- const record=config.installed?.[config.sourceRoot+'/'+relative],canonical=boundary.manifest.files[relative];
- const owner=owners.includes(relative)&&canonical&&record?.version===boundary.manifest.version&&record?.hash===canonical.hash;
+ const trusted=canonicalOwner(boundary,config,relative,css);
+ const owner=owners.includes(relative)&&trusted;
+ if(trusted&&geometryClasses[relative])rules['shadcn/no-arbitrary-values']=['error',{allow:geometryClasses[relative]}];
  if(owner)rules['shadcn/no-restyle']='off';
  // Exact candidates declared by the consumer's own @theme bridge the grammar's
  // packaged discovery context. Package default palette declarations are excluded.

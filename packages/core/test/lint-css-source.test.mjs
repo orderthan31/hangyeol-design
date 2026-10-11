@@ -169,6 +169,28 @@ test('canonical BrandMark passes; copied/edited owner cannot gain mask or semant
   assert.equal(result.report.diagnostics.filter(item => item.file.endsWith('brand-mark.tsx') && item.rule === 'ds/no-unowned-custom-properties').length, 3);
 });
 
+test('canonical geometry inputs transfer narrowly and edited owner bytes revoke all privileges', () => {
+ const f=fixture(true);
+ const names=['primitives/progress.tsx','components/bottom-cta.tsx','components/bottom-sheet.tsx','components/text-field.tsx'];
+ f.install(names);
+ let result=f.lint();assert.equal(result.status,0,result.stderr);
+ assert.ok(result.report.inlinePropertyOwners.some(x=>x.file.endsWith('/progress.tsx')&&x.properties.length===1&&x.properties[0]==='--g-progress-width'));
+ const owner='components/text-field.tsx',original=fs.readFileSync(path.join(f.root,f.config.sourceRoot,owner),'utf8');
+ // Keep the ORIGINAL installation hash: that metadata alone never authorizes edited code.
+ f.ui(owner,original.replace('shrink-0 whitespace-nowrap','p-8'));
+ result=f.lint();assert.equal(result.status,1,result.stderr);
+ assert.ok(result.report.diagnostics.some(x=>x.file.endsWith('/text-field.tsx')&&x.rule==='shadcn/no-restyle'));
+ f.install([owner]);
+ const progress=fs.readFileSync(path.join(f.root,f.config.sourceRoot,'primitives/progress.tsx'),'utf8');
+ f.ui('primitives/progress.tsx',progress+'\n// consumer edited\n');
+ result=f.lint();assert.equal(result.status,1,result.stderr);
+ for(const rule of ['ds/no-unowned-custom-properties','shadcn/no-arbitrary-values'])assert.ok(result.report.diagnostics.some(x=>x.file.endsWith('/progress.tsx')&&x.rule===rule));
+ f.install(['primitives/progress.tsx']);
+ f.ui('consumer.tsx',`import {Button} from './primitives/button'; export const Bad=()=> <Button className="w-[var(--g-progress-width)]" style={{'--g-progress-width':'20%'}}/>;`);
+ result=f.lint();assert.equal(result.status,1,result.stderr);
+ for(const rule of ['ds/no-unowned-custom-properties','shadcn/no-arbitrary-values'])assert.ok(result.report.diagnostics.some(x=>x.file.endsWith('/consumer.tsx')&&x.rule===rule));
+});
+
 test('imported CSS does not replace the actual compiler requirement', () => {
   const f = fixture();
   f.ui('owner.css', '.owned {display:block}');

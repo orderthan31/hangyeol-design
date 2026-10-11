@@ -1,3 +1,4 @@
+import './docs.css';
 import { NativeSelect } from './hangyeol/primitives/native-select';
 import { ColorInput } from './hangyeol/primitives/color-input';
 import { ControlGroup } from './hangyeol/primitives/control-label';
@@ -13,7 +14,7 @@ import { Row } from './hangyeol/primitives/layout';
 import { CodeBlock } from './hangyeol/components/code-block';
 
 export function Overview(){
- return <div className="docs-page docs-overview">
+ return <div className="docs-page">
   <div className="docs-brand-intro"><BrandCI intro/><p className="docs-lead">SIMPLE. BETTER. CONSISTENT.</p></div>
   <section className="docs-section"><h2>hangyeol</h2><div className="docs-brand-copy"><p>hangyeol은 버튼, 입력, 목록을 같은 기준으로 조합해 화면을 만드는 React 디자인 시스템입니다.</p><p>필요한 컴포넌트를 골라 사용하고, 색상과 간격은 내 프로젝트에 맞게 바꿀 수 있습니다. 익숙한 요소를 함께 사용하면서 화면마다 일관된 흐름을 만들어 보세요.</p></div></section>
   <section className="docs-section"><h2>화면을 구성하는 공통 기준</h2><dl className="docs-brand-principles"><div><dt>필요한 요소부터</dt><dd>버튼과 입력부터 목록, 대화상자까지 용도에 맞는 컴포넌트를 조합합니다. 각 컴포넌트의 예제에서 사용법을 확인할 수 있습니다.</dd></div><div><dt>역할에 맞는 색상</dt><dd>본문, 주요 행동, 오류의 색상을 구분하고 밝은 화면과 어두운 화면을 선택합니다. 기본 팔레트의 색을 바꾸거나 새 팔레트를 추가할 수 있습니다.</dd></div><div><dt>일관된 배치</dt><dd>본문 너비와 요소 사이 간격을 공통 기준으로 맞춥니다. 가로와 세로 배치, 화면 너비에 맞는 열 구성을 함께 사용할 수 있습니다.</dd></div></dl></section>

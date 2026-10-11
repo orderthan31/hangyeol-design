@@ -22,6 +22,11 @@ it('keeps one useful introduction or usage alone across every live default route
    const introductions=main.querySelectorAll('.docs-lead,.docs-intro,.docs-component-context').length;
    const notes=main.querySelectorAll('.docs-example-purpose').length;
    if(component){expect(introductions,name).toBeLessThanOrEqual(1);expect(main.textContent,name).toContain('사용법');}
+   if(name==='Tabs'){
+    // Raw Content keeps inactive panel elements; asChild would drop the empty
+    // inactive child and remove these aria-controls targets during SSR.
+    for(const value of ['delivery','reviews','notifications','security'])expect(main.querySelector(`[role="tabpanel"][id$="-content-${value}"][hidden]`),value).not.toBeNull();
+   }
    if(name==='Overview'){
     expect(main.querySelector('.docs-lead')!.textContent).toBe('SIMPLE. BETTER. CONSISTENT.');
     for(const target of ['Foundations','Button','GettingStarted'])expect(main.querySelector(`a[href="#${target}"]`)).not.toBeNull();

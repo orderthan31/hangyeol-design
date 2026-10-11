@@ -26,7 +26,7 @@ if(integration){
  for(const n of ['08','09'])env[`CORE${n}_PACKAGE_ROOT`]=path.join(host,'node_modules/@orderthan31/hangyeol-core');
 }
 const externalFixtures=new Set(['doctor-source.test.mjs','tokens-source.test.mjs','lint-source.test.mjs']);
-const tests=fs.readdirSync(path.join(root,'packages/core/test')).filter(n=>(n.endsWith('-source.test.mjs')||['package-boundary.test.mjs','init-contract.test.mjs','init-preflight.test.mjs','safety.test.mjs','safety-transaction.test.mjs','docs-consumer.test.mjs'].includes(n))&&(integration||!externalFixtures.has(n))).sort().map(n=>'packages/core/test/'+n);
+const tests=fs.readdirSync(path.join(root,'packages/core/test')).filter(n=>(n.endsWith('-source.test.mjs')||['design-policy-regression.test.mjs','package-boundary.test.mjs','init-contract.test.mjs','init-preflight.test.mjs','safety.test.mjs','safety-transaction.test.mjs','docs-consumer.test.mjs'].includes(n))&&(integration||!externalFixtures.has(n))).sort().map(n=>'packages/core/test/'+n);
 tests.push(...fs.readdirSync(path.join(root,'packages/core/test/ui')).filter(n=>n.endsWith('.test.mjs')).map(n=>'packages/core/test/ui/'+n));
 run('source',process.execPath,['--experimental-strip-types','--test','--test-concurrency=2',...tests]);
 run('ui',path.join(root,'node_modules/.bin/vitest'),['run','--config','packages/core/vitest.config.ts']);

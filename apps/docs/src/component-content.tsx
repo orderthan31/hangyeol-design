@@ -1,3 +1,4 @@
+import './docs.css';
 type ComponentContent = { when: string; preview: string };
 export const componentContent: Record<string, ComponentContent> = {
   Badge: { when: '짧은 상태나 분류를 표시할 때 사용합니다. 클릭해서 실행하는 행동에는 Button을 사용하세요.', preview: '세 가지 tone과 본문 안에서의 배치를 비교합니다. 색상과 함께 상태 문구가 남는지 확인하세요.' },

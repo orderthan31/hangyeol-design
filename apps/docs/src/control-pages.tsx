@@ -1,3 +1,4 @@
+import './docs.css';
 import { ControlGroup } from './hangyeol/primitives/control-label';
 import { PreviewSurface } from './hangyeol/primitives/preview-surface';
 import { ComponentIntroduction, ExamplePurpose } from './component-content';

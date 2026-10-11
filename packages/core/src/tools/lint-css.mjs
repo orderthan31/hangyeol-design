@@ -108,7 +108,20 @@ export function createCSSDiscovery(root, config) {
   };
 }
 
+export function canonicalOwner(boundary, config, relative, css, root = process.cwd()) {
+  const files = [relative, ...(css?.dependencies ?? [])];
+  return files.every(file => {
+    const canonical = boundary.manifest.files[file], record = config.installed?.[config.sourceRoot + '/' + file];
+    if (!canonical || record?.version !== boundary.manifest.version || record?.hash !== canonical.hash) return false;
+    return hash(fs.readFileSync(safeTarget(root, config.sourceRoot + '/' + file))) === canonical.hash
+      && hash(fs.readFileSync(path.join(boundary.root, 'payload/source', file))) === canonical.hash;
+  });
+}
+
 export function inlinePropertyOwnership(boundary, config, relative, css, root = process.cwd()) {
+  // Progress owns only a percentage input consumed by its exact width utility;
+  // it has no separate owner stylesheet. No semantic token is writable here.
+  if (relative === 'primitives/progress.tsx' && canonicalOwner(boundary, config, relative, css, root)) return ['--g-progress-width'];
   const contract = inlineContracts.find(item => item.file === relative);
   if (!contract || !css?.records.has(contract.stylesheet)) return [];
   for (const file of [contract.file, contract.stylesheet]) {
