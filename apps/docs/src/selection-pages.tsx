@@ -1,5 +1,5 @@
 import { PreviewSurface } from './hangyeol/primitives/preview-surface';
-import { ComponentContext, ExamplePurpose } from './component-content';
+import { ComponentIntroduction, ExamplePurpose } from './component-content';
 import { useState } from 'react';
 import { RadioGroup } from './hangyeol/primitives/radio-group';
 import { SegmentedControl } from './hangyeol/components/segmented-control';
@@ -66,8 +66,8 @@ export function SelectionPage({ name, initialPanel = 'usage' }: { name: Selectio
   else if (name === 'Popover') { extraImports = ', PopoverTrigger, PopoverContent, PopoverClose, PopoverTitle'; declarations = `const [open, setOpen] = useState(${open});\n  const [help, setHelp] = useState(${help});`; body = '<Popover open={open} onOpenChange={setOpen}><PopoverTrigger asChild><Button variant="secondary" ' + disabledAttr + '>표시 옵션</Button></PopoverTrigger><PopoverContent aria-label="표시 옵션"><PopoverTitle>표시 옵션</PopoverTitle><label><Checkbox checked={help} onCheckedChange={next => setHelp(next === true)}/>보조 설명 표시</label>{help && <p>이 예제의 설정에만 적용합니다.</p>}<PopoverClose asChild><Button variant="secondary">닫기</Button></PopoverClose></PopoverContent></Popover>'; onReset += ' setOpen(false); setHelp(true);'; }
   else { declarations = `const [open, setOpen] = useState(${open});`; body = `<Tooltip content=${JSON.stringify(tooltipText)} delayDuration={${delay}} open={open} onOpenChange={setOpen}><Button variant="secondary" ${disabledAttr}>항목 고정</Button></Tooltip>`; onReset += ' setOpen(false);'; }
   const code = `import { useState } from 'react';\nimport { ${name}${extraImports} } from './hangyeol/${files[name]}';\nimport { Button } from './hangyeol/primitives/button';\n${name === 'Popover' ? "import { Checkbox } from './hangyeol/primitives/checkbox';\n" : ''}\nexport function Example() {\n  ${declarations}\n  const [result, setResult] = useState("");\n  return <form onReset={() => { ${onReset} }} onSubmit={event => {\n    event.preventDefault();\n    setResult(JSON.stringify(Array.from(new FormData(event.currentTarget).entries())));\n  }}>\n    ${body}\n    <Button type="submit">제출 값 보기</Button>\n    <Button type="reset" variant="secondary">예제 값 초기화</Button>\n    <p role="status">{result}</p>\n  </form>;\n}`;
-  return <div className="space-y-8"><p className="docs-intro">{selectionDescriptions[name]}</p>
-    <ComponentContext name={name}/><ExamplePurpose name={name}/>
+  return <div className="space-y-8"><ComponentIntroduction name={name} description={selectionDescriptions[name]} leadClassName="docs-intro"/>
+    <ExamplePurpose name={name}/>
     <PreviewSurface asChild><section  aria-label={`${name} 사용 예제`}><form className="grid gap-4" onReset={resetValues} onSubmit={event => { event.preventDefault(); setFeedback(JSON.stringify(Array.from(new FormData(event.currentTarget).entries()))); }}>{demo}
       {name === 'IconAction' && <p role="status" className="text-g-small text-g-soft">{clicks}번 누름 · 저장하지 않는 예제</p>}
       {inputLike && <div className="flex flex-wrap gap-2"><Button type="submit">제출 값 보기</Button><Button type="reset" variant="secondary">입력 초기화</Button></div>}

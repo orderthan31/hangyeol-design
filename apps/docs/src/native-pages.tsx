@@ -13,7 +13,7 @@ import { Checkbox } from './hangyeol/primitives/checkbox';
 import { SegmentedControl } from './hangyeol/components/segmented-control';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './hangyeol/primitives/tabs';
 import { CodeBlock } from './hangyeol/components/code-block';
-import { ComponentContext, ExamplePurpose } from './component-content';
+import { ComponentIntroduction, ExamplePurpose } from './component-content';
 export const nativeNames=['Alert','Breadcrumb','Bubble','ErrorState','Pagination','ProgressStepper','Result','Table'] as const;
 export type NativeName=typeof nativeNames[number];
 export const nativeDescriptions:Record<NativeName,string>={Alert:'화면 안의 안내와 결과를 짧고 분명하게 전달합니다.',Breadcrumb:'현재 위치와 상위 화면으로 돌아가는 경로를 보여줍니다.',Bubble:'작성자·내용·시간·행동을 읽기 순서대로 묶습니다.',ErrorState:'오류 안내와 다시 시도할 행동을 함께 제공합니다.',Pagination:'목록의 페이지를 선택하고 이전·다음으로 이동합니다.',ProgressStepper:'여러 단계의 완료·현재·예정 상태를 보여줍니다.',Result:'완료나 오류 결과와 이어갈 행동을 보여줍니다.',Table:'행과 열이 있는 정보를 표의 의미 구조로 표시합니다.'};
@@ -61,7 +61,7 @@ export function NativePage({name,initialPanel='usage'}:{name:NativeName;initialP
   declarations="const [feedback, setFeedback] = useState('');";body=`<div className="grid gap-4"><Bubble author="김한결" time="오전 10:30" align=${q(align)} actions={<Button variant="quiet" onClick={() => setFeedback('답장을 눌렀어요. 메시지는 전송하지 않습니다.')}>답장</Button>}>{${q('알림 설정을 확인했어요.\n다음 화면에서도 이어서 확인할 수 있습니다.')}}</Bubble><p role="status">{feedback}</p></div>`;
  }
  const code=`import { useState } from 'react';\nimport { ${symbols} } from './hangyeol/components/${files[name]}';\nimport { Button } from './hangyeol/primitives/button';\n\nexport function Example() {\n  ${declarations}\n  return ${body};\n}`;
- return <div className="space-y-8"><p className="docs-intro">{nativeDescriptions[name]}</p><ComponentContext name={name}/><ExamplePurpose name={name}/><PreviewSurface asChild><section  aria-label={`${name} 사용 예제`}>{demo}{feedback&&<p role="status" className="mt-4 text-g-small text-g-soft">{feedback}</p>}</section></PreviewSurface>
+ return <div className="space-y-8"><ComponentIntroduction name={name} description={nativeDescriptions[name]} leadClassName="docs-intro"/><ExamplePurpose name={name}/><PreviewSurface asChild><section  aria-label={`${name} 사용 예제`}>{demo}{feedback&&<p role="status" className="mt-4 text-g-small text-g-soft">{feedback}</p>}</section></PreviewSurface>
  <Tabs value={panel} onValueChange={next=>setPanel(next as typeof panel)}><TabsList aria-label="예제 안내"><TabsTrigger value="usage">사용법</TabsTrigger><TabsTrigger value="settings">예제 설정</TabsTrigger><TabsTrigger value="code">코드</TabsTrigger></TabsList><TabsContent value="usage"><div className="grid gap-4 py-4">{usage[name].map(line=><p key={line} className="text-g-soft">{line}</p>)}</div></TabsContent><TabsContent value="settings"><div className="grid gap-4 py-4">
  {['Pagination','ErrorState','Result','ProgressStepper'].includes(name)&&<label className="flex min-h-11 items-center gap-3"><Checkbox checked={disabled} onCheckedChange={next=>setDisabled(next===true)}/>사용할 수 없는 상태</label>}
  {(name==='ErrorState'||name==='Result')&&<label className="flex min-h-11 items-center gap-3"><Checkbox checked={busy} onCheckedChange={next=>setBusy(next===true)}/>처리 중</label>}

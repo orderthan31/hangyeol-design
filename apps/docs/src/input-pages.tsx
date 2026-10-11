@@ -1,5 +1,5 @@
 import { PreviewSurface } from './hangyeol/primitives/preview-surface';
-import { ComponentContext, ExamplePurpose } from './component-content';
+import { ComponentIntroduction, ExamplePurpose } from './component-content';
 import { useRef, useState } from 'react';
 import { Button } from './hangyeol/primitives/button';
 import { Checkbox } from './hangyeol/primitives/checkbox';
@@ -82,8 +82,8 @@ export function InputPage({ name, initialPanel = 'usage' }: { name: InputName; i
   const code = `import { useState } from 'react';\nimport { ${name} } from './hangyeol/components/${filenames[name]}';\nimport { Button } from './hangyeol/primitives/button';\n\nexport function Example() {\n  ${state}\n  const [result, setResult] = useState("");\n  return <form onReset={() => { ${name !== 'FileInput' ? `setValue(${resetValue}); ` : ''}setResult(""); }} onSubmit={event => {\n    event.preventDefault();\n    const data = new FormData(event.currentTarget);\n    setResult(JSON.stringify(Array.from(data.entries()).map(([key, value]) => [key, typeof value === "string" ? value : { name: value.name, size: value.size }])));\n  }}>\n    <${name} ${attrs}/>\n    <Button type="submit">제출 값 보기</Button>\n    <Button type="reset" variant="secondary">입력 초기화</Button>\n    <p role="status">{result}</p>\n  </form>;\n}`;
   const resetExample = () => { setDisabled(false); setReadOnly(false); setError(false); setText(defaults[name] ?? ''); setSelected(['email']); setRating(3); setAddress(addressDefault); setFeedback(''); form.current?.reset(); };
   return <div className="space-y-8">
-    <p className="docs-intro">{inputDescriptions[name]}</p>
-    <ComponentContext name={name}/><ExamplePurpose name={name}/>
+    <ComponentIntroduction name={name} description={inputDescriptions[name]} leadClassName="docs-intro"/>
+    <ExamplePurpose name={name}/>
     <PreviewSurface asChild><section  aria-label={`${name} 사용 예제`}>
       <form ref={form} className="grid gap-4" onReset={() => { setText(defaults[name] ?? ''); setSelected(['email']); setRating(3); setAddress(addressDefault); setFeedback(''); }} onSubmit={event => {
         event.preventDefault(); const data = new FormData(event.currentTarget);

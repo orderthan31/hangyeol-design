@@ -78,9 +78,67 @@ export const componentContent: Record<string, ComponentContent> = {
   Chart: { when: "실제 data·labelKey·series를 전달하고 kind로 line·bar·donut을 고릅니다. Recharts 한 엔진을 사용하며 임의의 샘플 값을 내부에서 만들지 않습니다.", preview: "현재 값·선택 범위·오류와 실제 예제 행동을 확인합니다. 서버 자료는 변경하지 않습니다." },
   Tooltip: { when: '기존 요소의 이름을 바꾸지 않고 짧은 보조 설명을 덧붙일 때 사용합니다.', preview: '마우스나 초점으로 표시되는 설명과 지연 시간을 확인합니다. 중요한 안내는 본문에도 남겨야 합니다.' },
 };
-export function ComponentContext({ name }: { name: string }) {
-  return <p className="docs-component-context">{componentContent[name].when}</p>;
+const introductionChoices: Record<string, 'lead' | 'context'> = {
+  "Badge": "lead",
+  "Button": "context",
+  "Input": "context",
+  "TextField": "context",
+  "Select": "context",
+  "Tabs": "context",
+  "Dialog": "context",
+  "FormSection": "context",
+  "ActionGroup": "lead",
+  "Checkbox": "context",
+  "Switch": "context",
+  "Textarea": "context",
+  "Slider": "context",
+  "Separator": "context",
+  "Skeleton": "context",
+  "LoadingSpinner": "context",
+  "Container": "context",
+  "Highlight": "lead",
+  "Icon": "context",
+  "IconButton": "context",
+  "FormField": "context",
+  "EmptyState": "lead",
+  "CheckboxGroup": "context",
+  "CurrencyInput": "lead",
+  "FileInput": "context",
+  "NumberInput": "context",
+  "PasswordInput": "context",
+  "Rating": "context",
+  "SearchField": "context",
+  "RadioGroup": "context",
+  "Combobox": "lead",
+  "MultiSelect": "context",
+  "Alert": "context",
+  "Breadcrumb": "context",
+  "Bubble": "context",
+  "ErrorState": "context",
+  "Table": "context"
+};
+const previewNotes: Record<string, string> = {
+  "Layout": "간격 옵션은 바깥 배치에만 적용됩니다.",
+  "CurrencyInput": "이 예제는 원 단위 정수 입력입니다.",
+  "NumberInput": "이 예제는 0~20 범위의 정수를 입력합니다.",
+  "PasswordInput": "비밀번호 강도를 평가하지는 않습니다.",
+  "ErrorState": "실제 요청은 하지 않습니다.",
+  "Drawer": "서버에 저장하지 않습니다.",
+  "BottomSheet": "서버에 저장하지 않습니다.",
+  "DatePicker": "서버 자료는 변경하지 않습니다.",
+  "MonthPicker": "서버 자료는 변경하지 않습니다.",
+  "TimeInput": "서버 자료는 변경하지 않습니다.",
+  "DateTimeInput": "서버 자료는 변경하지 않습니다.",
+  "DateRangePicker": "서버 자료는 변경하지 않습니다.",
+  "DataTable": "서버 자료는 변경하지 않습니다.",
+  "Chart": "서버 자료는 변경하지 않습니다."
+};
+export function ComponentIntroduction({ name, description, leadClassName }: { name: string; description: string; leadClassName: string }) {
+  const choice = introductionChoices[name];
+  if (!choice) return null;
+  return <p className={choice === 'lead' ? leadClassName : 'docs-component-context'}>{choice === 'lead' ? description : componentContent[name].when}</p>;
 }
 export function ExamplePurpose({ name }: { name: string }) {
-  return <p className="docs-example-purpose">{componentContent[name].preview}</p>;
+  const note = previewNotes[name];
+  return note ? <p className="docs-example-purpose">{note}</p> : null;
 }

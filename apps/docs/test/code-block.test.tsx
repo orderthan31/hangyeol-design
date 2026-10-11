@@ -5,6 +5,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { CodeBlock } from '../src/hangyeol/components/code-block';
 import * as formatting from '../src/hangyeol/lib/code-format';
 import { Theme } from '../src/hangyeol/foundation/theme';
+import fs from 'node:fs';
+import path from 'node:path';
 
 // Source-only census: expose existing code panels during SSR, without browser work.
 vi.mock('../src/hangyeol/primitives/tabs', async (importOriginal) => {
@@ -240,15 +242,19 @@ it('formats every current default component and Foundation code example without 
     })),
     { name: 'GettingStarted', node: <visitors.GettingStarted /> },
     { name: 'Customization', node: <visitors.Customization /> },
-    { name: 'CompositionExamples', node: <components.CompositionExamples /> },
+    { name: 'TaskExample', node: <components.CompositionExamples /> },
+    { name: 'Overview', node: <visitors.Overview /> },
+    { name: 'Foundations', node: <foundations.Foundations /> },
   ];
   const failures: string[] = [];
   let count = 0;
+  const census: {name:string; examples:number}[]=[];
   for (const { name, node } of pages) {
     const template = document.createElement('template');
     template.innerHTML = renderToStaticMarkup(<Theme>{node}</Theme>);
     const blocks = template.content.querySelectorAll('.hangyeol-code');
-    if (!name.startsWith('Foundation'))
+    census.push({name,examples:blocks.length});
+    if (!name.startsWith('Foundation') && name !== 'Overview')
       expect(blocks.length, name).toBeGreaterThan(0);
     for (const block of blocks) {
       const code = block.querySelector('code')!.textContent!;
@@ -275,5 +281,8 @@ it('formats every current default component and Foundation code example without 
     }),
   );
   expect(failures).toEqual([]);
+  expect(pages).toHaveLength(89);
   expect(count).toBeGreaterThan(70);
+  const evidence=process.env.HANGYEOL_GETTING_STARTED_EVIDENCE;
+  if(evidence)fs.writeFileSync(path.join(evidence,'formatted-example-census.json'),JSON.stringify({pages:census,examples:count,failures},null,2));
 }, 30000);

@@ -14,9 +14,10 @@ import { CodeBlock } from './hangyeol/components/code-block';
 
 export function Overview(){
  return <div className="docs-page docs-overview">
-  <div className="docs-brand-intro"><BrandCI intro/><p className="docs-lead">다른 제품에서도 같은 판단 기준으로 이어 만드는 React 디자인 시스템.</p></div>
-  <section className="docs-section"><h2>한결디자인</h2><div className="docs-brand-copy"><p>한결디자인은 서로 다른 제품에서도 읽기·입력·행동의 관계를 일관되게 이어 가기 위한 React 디자인 시스템입니다. 버튼과 입력, 목록의 역할을 공통 기준으로 설명하고, 개발자가 소스를 읽고 제품에 맞게 수정하는 방식을 중심에 둡니다.</p><p>한글 인터페이스와 PC·모바일의 맥락을 함께 살피며, 제품의 색과 업무 규칙은 소비 프로젝트의 선택으로 남깁니다. 공통 기준은 모든 화면을 같은 모습으로 만드는 규칙이 아니라 다음 화면을 판단할 수 있는 기준입니다.</p></div></section>
-  <section className="docs-section"><h2>디자인 원칙</h2><dl className="docs-brand-principles"><div><dt>명료함</dt><dd>정보와 행동을 구분하고, 현재 상태와 다음 행동이 읽히게 합니다.</dd></div><div><dt>일관된 관계</dt><dd>같은 역할의 입력, 버튼과 목록은 공통된 크기·간격·상태 기준을 따릅니다.</dd></div><div><dt>이어 만들기</dt><dd>소스와 팔레트를 프로젝트 안에서 소유하고 제품의 맥락에 맞게 수정합니다.</dd></div></dl></section>
+  <div className="docs-brand-intro"><BrandCI intro/><p className="docs-lead">SIMPLE. BETTER. CONSISTENT.</p></div>
+  <section className="docs-section"><h2>hangyeol</h2><div className="docs-brand-copy"><p>hangyeol은 버튼, 입력, 목록을 같은 기준으로 조합해 화면을 만드는 React 디자인 시스템입니다.</p><p>필요한 컴포넌트를 골라 사용하고, 색상과 간격은 내 프로젝트에 맞게 바꿀 수 있습니다. 익숙한 요소를 함께 사용하면서 화면마다 일관된 흐름을 만들어 보세요.</p></div></section>
+  <section className="docs-section"><h2>화면을 구성하는 공통 기준</h2><dl className="docs-brand-principles"><div><dt>필요한 요소부터</dt><dd>버튼과 입력부터 목록, 대화상자까지 용도에 맞는 컴포넌트를 조합합니다. 각 컴포넌트의 예제에서 사용법을 확인할 수 있습니다.</dd></div><div><dt>역할에 맞는 색상</dt><dd>본문, 주요 행동, 오류의 색상을 구분하고 밝은 화면과 어두운 화면을 선택합니다. 기본 팔레트의 색을 바꾸거나 새 팔레트를 추가할 수 있습니다.</dd></div><div><dt>일관된 배치</dt><dd>본문 너비와 요소 사이 간격을 공통 기준으로 맞춥니다. 가로와 세로 배치, 화면 너비에 맞는 열 구성을 함께 사용할 수 있습니다.</dd></div></dl></section>
+  <section className="docs-section"><h2>둘러보기</h2><Row><Link variant="text" href="#Foundations">기본 스타일 살펴보기 →</Link><Link variant="text" href="#Button">컴포넌트 살펴보기 →</Link><Link variant="text" href="#GettingStarted">설치하고 시작하기 →</Link></Row></section>
  </div>;
 }
 export function GettingStarted() {
@@ -37,7 +38,7 @@ export function App() {
   return (
     <div className="docs-page">
       <p className="docs-lead">
-        한결 core로 공통 설정을 준비하고, 필요한 컴포넌트만 프로젝트에 설치하세요.
+        hangyeol 설치 도구로 공통 설정을 준비하고, 필요한 컴포넌트만 프로젝트에 설치하세요.
       </p>
       <section className="docs-section">
         <h2>설치 방식 이해하기</h2>
@@ -48,7 +49,7 @@ export function App() {
           프로젝트에 설치된 로컬 소스를 import합니다.
         </p>
         <p className="text-g-small text-g-soft">
-          아래 명령은 모두 소비 프로젝트의 package.json이 있는 폴더에서 실행하세요. npm
+          아래 명령은 모두 컴포넌트를 사용할 프로젝트의 package.json이 있는 폴더에서 실행하세요. npm
           exec의 --no 옵션은 도구가 없을 때 다른 패키지를 자동 다운로드하지 않도록 합니다.
         </p>
       </section>
@@ -106,19 +107,19 @@ export function App() {
       <section className="docs-section">
         <h2>3. 공통 설정 초기화하기</h2>
         <p className="text-g-soft leading-7">
-          먼저 dry-run으로 생성 파일과 필요한 의존성을 확인하고, 문제가 없을 때 초기화를
+          먼저 dry-run(파일을 바꾸지 않고 실행 계획만 확인하는 방식)으로 생성 파일과 필요한 의존성을 확인하고, 문제가 없을 때 초기화를
           적용합니다. 적용 과정에서 누락된 의존성은 npm으로 정확한 버전을 설치합니다.
         </p>
         <CodeBlock language="Shell">{`${cli} init --dry-run\n${cli} init`}</CodeBlock>
         <ul className="text-g-soft leading-7">
           <li>
-            <code>hangyeol.json</code>: 경로·설치 항목·원본 해시 기록
+            <code>hangyeol.json</code>: 경로·설치 항목·원본 해시(파일 변경 여부를 확인하는 값) 기록
           </li>
           <li>
             <code>src/hangyeol</code>: 테마 CSS와 공통 소스, 이후 추가할 컴포넌트
           </li>
           <li>
-            <code>src/hangyeol.css</code>: 앱에서 가져올 공통 스타일 진입점
+            <code>src/hangyeol.css</code>: 앱에서 한 번 가져오는 공통 스타일 파일
           </li>
           <li>
             <code>public/fonts/hangyeol</code>: Pretendard 글꼴·라이선스·출처 정보
@@ -130,8 +131,7 @@ export function App() {
         <p className="text-g-soft leading-7">
           컴포넌트의 설치 이름은 button, text-field처럼 소문자와 하이픈으로 작성합니다.
           여러 항목을 한 번에 추가할 수도 있습니다. 아래 화면 예제의 Theme도 사용할 수
-          있도록 theme를 함께 설치합니다. 필요한 공통 소스와 연결된 컴포넌트·런타임·타입
-          의존성도 함께 준비됩니다.
+          있도록 theme를 함께 설치합니다. 필요한 공통 소스와 연결된 컴포넌트와 실행·타입 검사에 필요한 추가 패키지(의존성)도 함께 준비됩니다.
         </p>
         <CodeBlock language="Shell">{`${cli} add theme text-field --dry-run\n${cli} add theme text-field\n\n# 다른 컴포넌트도 필요할 때 추가\n${cli} add button dialog --dry-run\n${cli} add button dialog`}</CodeBlock>
         <p className="text-g-small text-g-soft">
@@ -160,7 +160,7 @@ export function App() {
         <h2>설치 후 검사 명령어</h2>
         <CodeBlock language="Shell">{`# 설치된 core의 소스·도구 구성 확인\n${cli} inspect\n\n# 설치 기록·의존성·Vite 연결 검사\n${cli} doctor\n\n# 설정된 sourceRoot의 정적 코드 검사\n${cli} lint\n${cli} lint inspect\n\n# 실제 프로젝트 CSS의 의미 토큰 검사\n${cli} tokens validate\n${cli} tokens inspect`}</CodeBlock>
         <p className="text-g-small text-g-soft">
-          doctor는 자동 수리 명령이 아닙니다. lint는 설정된 sourceRoot의 TS/TSX를 검사하며
+          doctor는 자동 수리 명령이 아닙니다. lint는 sourceRoot(컴포넌트 소스가 설치되는 폴더)의 TS/TSX를 검사하며
           앱 전체나 브라우저 동작을 검증하지 않습니다. lint inspect와 tokens inspect는
           도구·패키지 원본 확인이고, 실제 프로젝트 검사는 각각 lint와 tokens validate로
           실행합니다.
@@ -178,7 +178,7 @@ export function App() {
       <section className="docs-section">
         <h2>경로를 바꿔 초기화하기</h2>
         <p className="text-g-soft leading-7">
-          기본 경로 대신 다른 위치나 alias를 사용하려면 최초 init에 지정하세요. 다음
+          기본 경로 대신 다른 위치나 alias(가져오기 경로에 붙이는 별칭)를 사용하려면 최초 init에 지정하세요. 다음
           예제는 기본 초기화 대신 사용하는 대안입니다. 기존 hangyeol.json의 설치 경로를
           바꾸는 명령은 아닙니다. 기존 Vite 설정이 있다면 먼저 같은 alias를 sourceRoot에
           연결해야 합니다. Vite 설정이 없을 때는 init이 연결 설정을 생성합니다. Alias를
@@ -192,7 +192,7 @@ export function App() {
       <section className="docs-section">
         <h2>직접 편집한 소스 보호하기</h2>
         <p className="text-g-soft leading-7">
-          설치된 컴포넌트와 테마는 프로젝트가 소유하는 로컬 파일입니다. 직접 수정할 수
+          설치된 컴포넌트와 테마는 프로젝트 안에 복사되는 로컬 파일입니다. 직접 수정할 수
           있고, add는 충돌한 파일을 기본적으로 덮어쓰지 않습니다. 원본으로 교체해야 할
           때만 버전 관리로 변경을 보관한 뒤, 선택 항목의 overwrite 계획을 확인하세요.
         </p>
