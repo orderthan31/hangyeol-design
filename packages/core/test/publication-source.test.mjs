@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
 import {spawnSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
@@ -41,6 +43,47 @@ test('workflow YAML has manual-only triggers, least privilege and guarded publis
  assert.equal(step.run,'npm publish --registry=https://npm.pkg.github.com --tag=latest --ignore-scripts=false');
  assert.deepEqual(step.env,{NODE_AUTH_TOKEN:'${{ secrets.GITHUB_TOKEN }}',HANGYEOL_PUBLISH:'${{ inputs.publish }}',HANGYEOL_CONFIRM:'${{ inputs.confirmation }}',npm_config_registry:'https://npm.pkg.github.com',npm_config_ignore_scripts:'false'});
  for(const job of [validate,publish])for(const s of job.steps)if(s!==step)assert.equal(s.env?.NODE_AUTH_TOKEN,undefined);
+});
+
+test('registry accepts only the exact configured URL and npm lifecycle trailing slash',()=>{
+ for(const registry of ['https://npm.pkg.github.com','https://npm.pkg.github.com/'])assert.equal(validatePublishContext(pkg,{...env,npm_config_registry:registry},event,reviewed).registry,'https://npm.pkg.github.com');
+ const rejected=[undefined,'','http://npm.pkg.github.com','https://registry.npmjs.org','https://npm.pkg.github.com.evil.test','https://NPM.PKG.GITHUB.COM','https://npm.pkg.github.com:443','https://npm.pkg.github.com:8443','https://npm.pkg.github.com/path','https://npm.pkg.github.com//','https://npm.pkg.github.com/%2f','https://npm.pkg.github.com/./','https://user@npm.pkg.github.com','https://user:pass@npm.pkg.github.com','https://npm.pkg.github.com?x=1','https://npm.pkg.github.com/?x=1','https://npm.pkg.github.com#fragment','https://npm.pkg.github.com/#fragment',' https://npm.pkg.github.com','https://npm.pkg.github.com/ '];
+ for(const registry of rejected)assert.throws(()=>validatePublishContext(pkg,{...env,npm_config_registry:registry},event,reviewed),/blocked: registry/);
+ // Package metadata is deliberately stricter than npm's runtime representation.
+ for(const registry of [...rejected,'https://npm.pkg.github.com/'])assert.throws(()=>validatePublishContext({...pkg,publishConfig:{registry}},env,event,reviewed),/blocked: registry/);
+ assert.throws(()=>validatePublishContext(pkg,{...env,npm_config_registry:undefined,NPM_CONFIG_REGISTRY:env.npm_config_registry},event,reviewed),/blocked: registry/);
+});
+
+test('real offline npm run lifecycle validates normalized registry but preserves token and lifecycle gates',t=>{
+ const directory=fs.mkdtempSync(path.join(process.env.CORE01_EVIDENCE_DIR||process.env.TMPDIR||os.tmpdir(),'publish-npm-lifecycle-'));
+ try {
+  fs.copyFileSync(new URL('../publish-guard.mjs',import.meta.url),path.join(directory,'publish-guard.mjs'));
+  fs.writeFileSync(path.join(directory,'package.json'),JSON.stringify({...pkg,scripts:{prepublishOnly:'node publish-guard.mjs',wrongLifecycle:'node publish-guard.mjs',probe:'node probe.mjs'}}));
+  fs.writeFileSync(path.join(directory,'publication-readiness.json'),JSON.stringify(reviewed));
+  fs.writeFileSync(path.join(directory,'event.json'),JSON.stringify(event));
+  fs.writeFileSync(path.join(directory,'probe.mjs'),"console.log(JSON.stringify({node:process.version,npm_config_registry:process.env.npm_config_registry,NPM_CONFIG_REGISTRY:process.env.NPM_CONFIG_REGISTRY}));");
+  for(const name of ['user-config','global-config'])fs.writeFileSync(path.join(directory,name),'');
+  // Never inherit authentication or read the caller's npm config. These commands
+  // run local scripts only; none invokes npm publish (including dry-run).
+  const npmEnv={...env,PATH:`${path.dirname(process.execPath)}${path.delimiter}${process.env.PATH}`,HOME:directory,GITHUB_EVENT_PATH:path.join(directory,'event.json'),npm_config_userconfig:path.join(directory,'user-config'),npm_config_globalconfig:path.join(directory,'global-config'),npm_config_cache:path.join(directory,'cache'),npm_config_offline:'true',npm_config_audit:'false',npm_config_fund:'false'};
+  const run=(args,extra={})=>spawnSync('npm',args,{cwd:directory,env:{...npmEnv,...extra},encoding:'utf8',timeout:30000});
+  const version=run(['--version']);assert.equal(version.status,0,version.stderr);
+  t.diagnostic(`npm lifecycle runtime: ${process.version}, npm ${version.stdout.trim()}`);
+  const probe=run(['run','--silent','probe','--registry=https://npm.pkg.github.com']);
+  assert.equal(probe.status,0,probe.stderr);
+  const runtime=JSON.parse(probe.stdout);
+  assert.equal(runtime.node,process.version);
+  assert.equal(runtime.npm_config_registry,'https://npm.pkg.github.com/');
+  assert.equal(runtime.NPM_CONFIG_REGISTRY,undefined);
+  const approved=run(['run','prepublishOnly','--registry=https://npm.pkg.github.com'],{NODE_AUTH_TOKEN:'synthetic-test-value'});
+  assert.equal(approved.status,0,approved.stderr);
+  assert.match(approved.stdout,/Manual publication intent validated/);
+  for(const [script,extra] of [['prepublishOnly',{}],['wrongLifecycle',{NODE_AUTH_TOKEN:'synthetic-test-value'}]]){
+   const blocked=run(['run',script,'--registry=https://npm.pkg.github.com'],extra);
+   assert.equal(blocked.status,1,blocked.stdout);
+   assert.match(blocked.stderr,/authenticated publish lifecycle required/);
+  }
+ } finally {fs.rmSync(directory,{recursive:true,force:true});}
 });
 
 test('approved intent can be validated in memory without authentication or network publication',()=>{

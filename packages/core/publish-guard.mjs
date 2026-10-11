@@ -11,7 +11,9 @@ export function validatePublishContext(pkg, env, event, readiness) {
   if (pkg.name !== name || pkg.version !== version) reject('candidate identity');
   if (pkg.private !== false || pkg.license !== 'UNLICENSED' || pkg.scripts?.prepublishOnly !== 'node publish-guard.mjs') reject('package safety contract');
   if (pkg.repository?.url !== `https://github.com/${repository}.git` || pkg.repository?.directory !== 'packages/core') reject('repository metadata');
-  if (pkg.publishConfig?.registry !== registry || env.npm_config_registry !== registry) reject('registry');
+  // npm 10 adds a root slash when exporting the registry to lifecycle scripts.
+  // Accept only that exact runtime variant; keep package metadata canonical.
+  if (pkg.publishConfig?.registry !== registry || ![registry, `${registry}/`].includes(env.npm_config_registry)) reject('registry');
   if (env.npm_config_ignore_scripts && env.npm_config_ignore_scripts !== 'false') reject('scripts must remain enabled');
   if (env.GITHUB_ACTIONS !== 'true' || env.GITHUB_EVENT_NAME !== 'workflow_dispatch') reject('manual GitHub Actions only');
   if (env.GITHUB_REPOSITORY !== repository || env.GITHUB_REF !== 'refs/heads/main') reject('repository/ref');
