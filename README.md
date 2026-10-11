@@ -1,54 +1,102 @@
 # 한결디자인 · Hangyeol
 
-React UI를 소비 프로젝트에 **편집 가능한 로컬 소스**로 설치하는 디자인 시스템입니다. 지원 adapter는 React 19 · Vite · Tailwind 4입니다. `@orderthan31/hangyeol-core`는 개발 도구이며 UI 런타임 import 대상이 아닙니다. 현재 후보는 guarded/UNLICENSED이고 발행하지 않습니다.
+React UI를 프로젝트에 **편집 가능한 로컬 소스**로 설치하는 디자인 시스템입니다. 필요한 UI만 선택하고, 컴포넌트와 테마를 애플리케이션 코드처럼 직접 수정합니다.
 
-## 두 개의 workspace
+`@orderthan31/hangyeol-core@0.0.1`은 GitHub Packages에 공개되어 있습니다. 이 패키지는 **소스 설치용 개발 도구**이며, 애플리케이션에서 import하는 UI 런타임 라이브러리가 아닙니다.
 
-- `packages/core/src/ui`: 재사용 UI·foundation·helper의 유일한 작성 원본.
-- `packages/core/src/tools`: init/add, 안전한 파일 transaction, lint, tokens.
-- `packages/core/registry/items.json`: 선택 설치 source/dependency graph.
-- `packages/core/assets/fonts`: 원본 Pretendard 파일·라이선스·provenance.
-- `packages/core/test`: 도구 계약과 `ui/` 컴포넌트 회귀 테스트.
-- `apps/docs`: 실제 설치된 core CLI가 생성한 `src/hangyeol`을 소비하는 문서 앱.
+> **사용 전 확인:** 공개 패키지도 GitHub Packages 인증이 필요합니다. 자체 코드와 UI 소스는 **UNLICENSED**이며, 공개 열람·다운로드가 외부 사용이나 재배포 권한을 부여하지 않습니다. [라이선스](packages/core/LICENSE)를 먼저 확인하세요.
 
-루트 prototype 앱, 별도 UI/CLI workspace와 중복 registry는 제거했습니다. Docs는 `main.tsx → docs-app.tsx`로 시작합니다. `docs/`에는 라이브러리 계약과 역사 checkpoint 문서가 있습니다. 역사 checkpoint는 현행 디렉터리 구조나 현재 검증 결과를 대신하지 않습니다.
+## 문서
 
-## 개발과 검사
+- [설치하기](docs/installation.md) — 인증, 새 프로젝트 전체 설정, 기존 프로젝트 연결
+- [컴포넌트 카탈로그](docs/components.md) — 선택 가능한 전체 항목, export 이름, 소스와 의존성
+- [CLI 사용법](docs/cli.md) — 설치·검사·토큰·린트 명령과 한계
+- [개발 가이드](docs/development.md) — 저장소 구조, 로컬 문서 앱, 테스트
+- [패키지 도구 계약 (English)](packages/core/README.md)
 
-Node 22.22.2/npm으로 실행합니다.
+## 빠르게 시작하기
 
-```sh
-npm ci
-npm run build
-npm run typecheck
-npm test
-npm run lint:slice
-npm run dev
-```
+지원 환경은 **React 19 · Vite · Tailwind CSS 4**입니다. Node.js **22.12 이상**이 필요하며, 재현 기준은 **Node.js 22.22.2 / npm 10.9.7**입니다. 새 프로젝트라면 [고정 버전으로 만드는 설치 안내](docs/installation.md#new-project)부터 진행하세요. 다른 프레임워크용 어댑터는 지원하지 않습니다.
 
-`build`는 core를 빌드한 다음 **설치된** `node_modules/.bin/hangyeol`로 Docs init/add를 실행하고 Docs를 빌드합니다. 선택 목록은 설치된 payload의 전체 registry에서 도출합니다. Docs의 `@orderthan31/hangyeol-core` devDependency는 workspace 버전과 정확히 일치합니다. UI runtime은 core 원본이나 payload를 직접 import하지 않습니다.
-
-생성된 source를 묵시적으로 덮어쓰지 않습니다. canonical UI 변경 후 기존 Docs 파일과 차이가 나면 generate가 conflict로 중단합니다. 변경 계획과 소유권을 검토한 뒤 명시적으로 마이그레이션하세요. `hangyeol.json`의 hash를 손으로 수정해 변경을 채택하지 마세요.
-
-`npm test`는 source 계약·실제 pack 검사·JSDOM UI·Docs 코드 예제를 검사합니다. 임시 증거는 repo 밖 `TMPDIR` 또는 `HANGYEOL_TEST_EVIDENCE_DIR`에 생성됩니다. 추가 offline dependency fixtures는 다음 명령으로 실행하며 준비된 cache가 필요합니다.
+아래는 지원 환경과 GitHub Packages 인증을 준비한 프로젝트에서 실행합니다. 기본 npm 레지스트리는 npmjs로 유지하고 `@orderthan31` 범위만 GitHub Packages에 연결합니다. [인증 안내](docs/installation.md#authentication)를 참고하세요.
 
 ```sh
-npm run test:integration -w @orderthan31/hangyeol-core
-```
-
-브라우저/Playwright/E2E/AT 검증은 위 명령에 포함되지 않습니다. 디자인 lint의 기존 findings는 실패로 보고하며 rule을 끄지 않습니다.
-
-## 독립 소비
-
-[설치 안내](docs/source-installation.md#core11-quickstart)와 [core 계약](packages/core/README.md)을 참고하세요. 로컬 pack 결과를 소비 프로젝트의 exact devDependency로 설치한 뒤 **해당 프로젝트에 설치된 bin**만 사용합니다.
-
-```sh
+npm install --save-dev --save-exact @orderthan31/hangyeol-core@0.0.1
+./node_modules/.bin/hangyeol --version
 ./node_modules/.bin/hangyeol init --dry-run
 ./node_modules/.bin/hangyeol init
-./node_modules/.bin/hangyeol add text-field
-./node_modules/.bin/hangyeol doctor
+./node_modules/.bin/hangyeol add theme text-field button --dry-run
+./node_modules/.bin/hangyeol add theme text-field button
 ```
 
-기본 설정은 `hangyeol.json`, source는 `src/hangyeol`, 스타일은 `src/hangyeol.css`, 글꼴은 `public/fonts/hangyeol`입니다. 테마 scope는 `data-hangyeol`이며 기존 `g-*` semantic token/utility 이름은 유지합니다. `init/add`는 필요한 runtime 의존성을 소비 앱에 직접 선언합니다. Chart 선택 시 Recharts와 react-is도 포함합니다.
+패키지 설치만으로 UI 파일이 생기지는 않습니다. `init`이 설정·스타일·글꼴·공통 헬퍼를 준비하고, `add`가 선택한 항목과 필요한 하위 항목을 설치합니다. 기존 프로젝트는 dry-run 결과와 충돌·백업 계획을 먼저 검토하세요.
 
-소비자의 편집, theme, palette, helper를 자동 reset하지 않습니다. update/diff/apply engine은 지원하지 않습니다. tarball 검증이나 prepared dependency 소비 빌드는 공개 registry/빈 cache 이식성·배포·브라우저 시각 검증을 뜻하지 않습니다.
+### 로컬 컴포넌트 사용
+
+`src/hangyeol/App.tsx`에 작성합니다. 이 위치는 기본 린트 검사 범위에 포함됩니다.
+
+```tsx
+import { Theme } from './foundation/theme';
+import { TextField } from './components/text-field';
+import { Button } from './primitives/button';
+
+export function App() {
+  return (
+    <Theme mode="light" palette="Indigo">
+      <div className="grid gap-4 p-6">
+        <TextField label="이름" name="name" defaultValue="김한결" clearable />
+        <Button type="button">확인</Button>
+      </div>
+    </Theme>
+  );
+}
+```
+
+`src/main.tsx`에서 앱을 연결하고 진입 스타일을 한 번 가져옵니다.
+
+```tsx
+import { createRoot } from 'react-dom/client';
+import { App } from './hangyeol/App';
+import './hangyeol.css';
+
+createRoot(document.getElementById('root')!).render(<App />);
+```
+
+`index.html`과 TypeScript 설정은 [전체 설치 예제](docs/installation.md#new-project)에 있습니다. 경로를 바꿨다면 import 경로도 함께 조정하세요. UI 코드에서 `@orderthan31/hangyeol-core`를 import하지 않습니다.
+
+```sh
+./node_modules/.bin/hangyeol inspect
+./node_modules/.bin/hangyeol doctor
+./node_modules/.bin/hangyeol tokens validate
+./node_modules/.bin/hangyeol lint
+./node_modules/.bin/tsc -p tsconfig.json --pretty false
+./node_modules/.bin/vite build
+```
+
+## 제공 항목
+
+레지스트리의 **84개 선택 설치 항목**에는 테마, 기본 요소, 복합 UI, 문서용 보조 요소가 포함됩니다. 독립 위젯 84개라는 뜻은 아닙니다. 한 항목이 여러 컴포넌트나 헬퍼를 내보낼 수 있습니다.
+
+| 분류 | 대표 항목 |
+| --- | --- |
+| 테마·레이아웃 | Theme, Stack, Row, Container, Grid, Shell |
+| 기본 요소·동작 | Button, IconButton, Icon, Badge, Link |
+| 입력·선택 | TextField, SearchField, PasswordInput, Select, Combobox, MultiSelect, AddressField |
+| 날짜·시간 | DatePicker, MonthPicker, TimeInput, DateTimeInput, DateRangePicker |
+| 탐색·목록 | Tabs, Breadcrumb, GNB, LNB, ListPanel, Pagination |
+| 오버레이·피드백 | Dialog, Drawer, BottomSheet, Tooltip, Toast, Alert, Result |
+| 데이터·문서 보조 | Table, DataTable, Chart, CodeBlock, PalettePicker, PreviewSurface, Specimen |
+
+[전체 카탈로그에서 설치 이름과 실제 export를 확인하세요.](docs/components.md) Radix 기반 구성 요소와 Chart 등은 선택 시 필요한 런타임 의존성을 소비 프로젝트에 선언합니다.
+
+## 테마와 소스 소유권
+
+기본 경로는 설정 `hangyeol.json`, 소스 `src/hangyeol`, 진입 스타일 `src/hangyeol.css`, 글꼴 `public/fonts/hangyeol`입니다. Pretendard 글꼴과 라이선스 고지를 프로젝트 안에 설치합니다.
+
+`Theme`은 밝은·어두운 모드와 팔레트 범위를 제공합니다. Indigo·Silver·Forest·Amber·Rose는 수정 가능한 프리셋이며 팔레트 이름을 제한하는 목록이 아닙니다. 설치된 컴포넌트·헬퍼·테마를 직접 편집할 수 있고, 재설치가 사용자 편집을 자동 초기화하지 않습니다. 일반적인 소스 업데이트·diff/apply·reset 엔진은 제공하지 않습니다.
+
+정적 검사와 빌드 통과는 브라우저 모양, 키보드 동작, 색상 대비, 보조공학 접근성 검증을 대신하지 않습니다. 자세한 검사 범위는 [CLI 안내](docs/cli.md)에 있습니다.
+
+## 라이선스
+
+자체 코드와 UI 소스는 [UNLICENSED](packages/core/LICENSE)입니다. 외부 사용·수정·재배포 권한이 별도로 부여되지 않았습니다. 포함된 글꼴은 SIL Open Font License 1.1 및 원저작자 고지를 유지합니다. [서드파티 고지](packages/core/THIRD_PARTY_NOTICES.md)를 함께 확인하세요.

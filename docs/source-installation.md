@@ -1,5 +1,7 @@
 # Hangyeol — 설치와 사용
 
+> **이전 오프라인 설치 기록:** 아래 CORE-11 절차와 예제는 과거 재현용으로 보존합니다. GitHub Packages `0.0.1`의 새 설치는 [현재 설치 안내](installation.md)를 따르세요. 아래의 당시 배포 상태 설명은 현재 패키지 공개 상태를 나타내지 않습니다.
+
 <a id="core11-quickstart"></a>
 ## 현재 quickstart — installed core → editable source (CORE-11)
 
