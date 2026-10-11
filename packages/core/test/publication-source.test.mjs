@@ -38,7 +38,7 @@ test('workflow YAML has manual-only triggers, least privilege and guarded publis
  assert.equal(publish.steps[1].with['registry-url'],'https://npm.pkg.github.com');
  assert.equal(publish.steps[1].with.scope,'@orderthan31');
  const step=publish.steps.at(-1);assert.equal(step['working-directory'],'packages/core');
- assert.equal(step.run,'npm publish --registry=https://npm.pkg.github.com --ignore-scripts=false');
+ assert.equal(step.run,'npm publish --registry=https://npm.pkg.github.com --tag=latest --ignore-scripts=false');
  assert.deepEqual(step.env,{NODE_AUTH_TOKEN:'${{ secrets.GITHUB_TOKEN }}',HANGYEOL_PUBLISH:'${{ inputs.publish }}',HANGYEOL_CONFIRM:'${{ inputs.confirmation }}',npm_config_registry:'https://npm.pkg.github.com',npm_config_ignore_scripts:'false'});
  for(const job of [validate,publish])for(const s of job.steps)if(s!==step)assert.equal(s.env?.NODE_AUTH_TOKEN,undefined);
 });
@@ -46,10 +46,11 @@ test('workflow YAML has manual-only triggers, least privilege and guarded publis
 test('approved intent can be validated in memory without authentication or network publication',()=>{
  assert.equal(validatePublishContext(pkg,env,event,reviewed).name,pkg.name);
 });
-test('actual candidate remains blocked pending later UI and copy review',()=>{
+test('actual approved source gate passes pure validation but local lifecycle stays blocked',()=>{
  const readiness=JSON.parse(fs.readFileSync(new URL('../publication-readiness.json',import.meta.url)));
- assert.equal(readiness.uiAndCopyReviewComplete,false);
- assert.throws(()=>validatePublishContext(pkg,env,event,readiness),/pending/);
+ assert.equal(readiness.uiAndCopyReviewComplete,true);
+ assert.equal(validatePublishContext(pkg,env,event,readiness).name,pkg.name);
+ for(const bad of [undefined,{}, {...reviewed,uiAndCopyReviewComplete:false}, {...reviewed,uiAndCopyReviewComplete:"true"}, {...reviewed,candidate:"wrong"}])assert.throws(()=>validatePublishContext(pkg,env,event,bad),/pending/);
  const result=spawnSync(process.execPath,[new URL('../publish-guard.mjs',import.meta.url).pathname],{env:{PATH:process.env.PATH},encoding:'utf8'});
  assert.equal(result.status,1);assert.match(result.stderr,/blocked/);
 });
@@ -59,6 +60,16 @@ for(const [key,value] of Object.entries({GITHUB_ACTIONS:'false',GITHUB_EVENT_NAM
 for(const [key,value] of [['name','hangyeol-core'],['version','0.1.0'],['private',true],['license','MIT'],['publishConfig',{registry:'https://registry.npmjs.org'}],['repository',{url:'https://github.com/other/repo.git',directory:'packages/core'}],['scripts',{}]]){
  test(`rejects wrong package ${key}`,()=>assert.throws(()=>validatePublishContext({...pkg,[key]:value},env,event,reviewed),/blocked/));
 }
+test('approved Actions intent still rejects missing token or wrong npm lifecycle',()=>{
+ const directory=fs.mkdtempSync(`${process.env.CORE01_EVIDENCE_DIR || process.env.TMPDIR}/publish-context-`);
+ const eventPath=`${directory}/event.json`;fs.writeFileSync(eventPath,JSON.stringify(event));
+ try {
+  for(const extra of [{npm_lifecycle_event:'prepublishOnly'}, {npm_lifecycle_event:'pack',NODE_AUTH_TOKEN:'synthetic-test-value'}]) {
+   const result=spawnSync(process.execPath,[new URL('../publish-guard.mjs',import.meta.url).pathname],{env:{PATH:process.env.PATH,...env,GITHUB_EVENT_PATH:eventPath,...extra},encoding:'utf8'});
+   assert.equal(result.status,1);assert.match(result.stderr,/authenticated publish lifecycle required/);
+  }
+ } finally {fs.rmSync(directory,{recursive:true});}
+});
 test('missing local context, missing payload, boolean/string confusion and wrong dispatch payload fail closed',()=>{
  for(const value of [null,{}, {...event,inputs:{publish:true,confirmation}}, {...event,inputs:{publish:'false',confirmation}}, {...event,inputs:{publish:'true',confirmation:'wrong'}}, {...event,ref:'refs/heads/topic'},{...event,repository:{full_name:'other/repo'}}])assert.throws(()=>validatePublishContext(pkg,env,value,reviewed),/blocked/);
  assert.throws(()=>validatePublishContext(pkg,{},event,reviewed),/blocked/);

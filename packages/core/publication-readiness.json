@@ -1,5 +1,5 @@
 {
   "candidate": "@orderthan31/hangyeol-core@0.0.1",
-  "uiAndCopyReviewComplete": false,
-  "reason": "Publication prohibited pending the later all-component border and description/usage audit. Package configuration completes first; global lint must also pass."
+  "uiAndCopyReviewComplete": true,
+  "reason": "All-component border and description/usage source review and global design lint are complete. The user explicitly approved the first manual publication. This source gate does not establish browser, accessibility, final visual or rights acceptance."
 }
