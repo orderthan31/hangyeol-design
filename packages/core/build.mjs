@@ -33,6 +33,7 @@ const copies = [
   ['packages/core/src/tools/installer.mjs', 'dist/tools/installer.mjs'],
   ['packages/core/src/tools/safety.mjs', 'dist/tools/safety.mjs'],
   ['packages/core/src/tools/host-config.mjs', 'dist/tools/host-config.mjs'],
+  ['packages/core/src/tools/host-dynamic.mjs', 'dist/tools/host-dynamic.mjs'],
 ];
 const files = {};
 for (const [from, to] of copies) {

@@ -1,7 +1,8 @@
-// A deliberately small static Vite adapter. Never import/evaluate host configuration.
+import {readDynamicViteConfig, dynamicNetworkTree} from './host-dynamic.mjs';
+// A deliberately bounded Vite adapter. Never import/evaluate host configuration.
 // Unsupported syntax is a diagnostic, not a guess about the effective host settings.
 function unsupported(detail) {
-  throw Error(`Unsupported/ambiguous Vite config: ${detail}. Use one static defineConfig({...}) with literal base/publicDir, imported plugin calls and explicit alias mapping; init does not rewrite host JS`);
+  throw Error(`Unsupported/ambiguous Vite config: ${detail}. Use a static defineConfig object or the reviewed mode/loadEnv callback, with literal base/publicDir, imported plugin calls and explicit alias mapping; init does not rewrite host JS`);
 }
 function tokenize(text) {
   const tokens=[];
@@ -30,6 +31,8 @@ function tokenize(text) {
   return tokens;
 }
 function readConfig(text) {
+  const dynamic = readDynamicViteConfig(text, unsupported);
+  if (dynamic) return dynamic;
   const tokens=tokenize(text),imports=new Map();let i=0;
   const at=v=>tokens[i]?.type!=='string'&&tokens[i]?.value===v;
   function take(v) {if(!at(v))unsupported(`expected ${v}`);return tokens[i++];}
@@ -77,18 +80,18 @@ function literalTree(node) {
   return node?.type==='literal'||(node?.type==='array'&&node.values.every(literalTree))||(node?.type==='object'&&[...node.values.values()].every(literalTree));
 }
 export function validateViteConfig(text,settings) {
-  const {config,imports}=readConfig(text);
+  const {config,imports,dynamic}=readConfig(text);
   // Even an unused imported module may have side effects when Vite loads it.
   // The existing adapter needs only these bindings; custom/React plugins are
   // outside this reviewed subset, not executed to discover their hooks.
   for(const {from,name} of imports.values())if(!(
-    from==='vite'&&name==='defineConfig'||
+    from==='vite'&&(name==='defineConfig'||dynamic&&name==='loadEnv')||
     from==='node:url'&&name==='fileURLToPath'||
     from==='@tailwindcss/vite'&&name==='default'
   ))unsupported(`unreviewed import/plugin ${from} (${name})`);
   for(const [key,node] of config) {
     if(!['base','publicDir','plugins','resolve','build','server','preview','optimizeDeps','css','define'].includes(key))unsupported(`host option ${key} is outside the supported subset`);
-    if(!['plugins','resolve'].includes(key)&&!literalTree(node))unsupported(`dynamic ${key}`);
+    if(!['plugins','resolve'].includes(key)&&!literalTree(node)&&!(dynamic&&['server','preview'].includes(key)&&dynamicNetworkTree(node,literalTree)))unsupported(`dynamic ${key}`);
   }
   // The installer relies on Vite's default disk output and public asset copy.
   // Literal nested options can still disable/redirect those effects; only this

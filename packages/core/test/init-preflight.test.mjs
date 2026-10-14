@@ -261,3 +261,33 @@ test('basePath P2 common source guard covers add/dry-run/overwrite without bypas
     const fixture=p2SourceHost('//cdn/','config'),call=p2SourceCall(fixture,args);assert.equal(call.result.status,1,call.result.stderr);assert.match(call.result.stderr,/basePath.*same-origin root-relative.*leading \/\//i);assert.deepEqual(call.after,call.before);assert.equal(fs.readFileSync(fixture.trace,'utf8'),'');
   }
 });
+
+const dynamicConfig = `import {defineConfig, loadEnv} from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, '.', 'VITE_');
+  return {plugins: [tailwindcss()], server: {
+    allowedHosts: (env.VITE_ALLOWED_HOSTS || '').split(',').map((host) => host.trim()).filter(Boolean),
+    proxy: {'/api': env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8000'},
+  }};
+});`;
+test('dynamic callback preserves the original host bytes and repeat init ownership no-op',()=>{
+  const dir=host();fs.writeFileSync(path.join(dir,'vite.config.ts'),dynamicConfig);
+  const before=snapshot(dir);run(dir,['init','--dry-run'],0);assert.deepEqual(snapshot(dir),before);
+  run(dir,['init'],0);assert.equal(fs.readFileSync(path.join(dir,'vite.config.ts'),'utf8'),dynamicConfig);
+  const installed=snapshot(dir);run(dir,['init'],0);assert.deepEqual(snapshot(dir),installed);
+});
+test('unsupported dynamic expressions fail before writes, backups, or npm',()=>{
+  for(const input of [
+    dynamicConfig.replace('const env =','globalThis.sideEffect = true; const env ='),
+    dynamicConfig.replace('plugins:',"base: env.VITE_BASE || '/', plugins:"),
+    dynamicConfig.replace('host.trim()','host.toLowerCase()'),
+    dynamicConfig.replace("loadEnv(mode, '.', 'VITE_')","loadEnv(mode, '.', '')"),
+  ]) {
+    const dir=host();fs.writeFileSync(path.join(dir,'vite.config.ts'),input);
+    const trap=path.join(dir,'fixture-bin'),trace=path.join(dir,'npm-trace.txt');
+    fs.mkdirSync(trap);fs.writeFileSync(trace,'');fs.writeFileSync(path.join(trap,'npm'),'#!/bin/sh\nprintf "npm invoked\\n" >> "$CORE02_NPM_TRACE"\nexit 93\n');fs.chmodSync(path.join(trap,'npm'),0o755);
+    rejected(dir,['init'],/Unsupported\/ambiguous Vite config/,{...process.env,PATH:trap+path.delimiter+process.env.PATH,CORE02_NPM_TRACE:trace});
+    assert.equal(fs.readFileSync(trace,'utf8'),'');
+  }
+});

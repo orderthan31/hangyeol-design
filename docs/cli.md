@@ -38,6 +38,8 @@
 
 기본 설정은 `hangyeol.json`이며 `src/hangyeol`, `src/hangyeol.css`, `public/fonts/hangyeol`을 사용합니다. 경로·기존 정적 Vite 설정을 검사하므로 임의의 호스트 설정을 자동 변환해 주지는 않습니다.
 
+동적 `mode/loadEnv` host 지원은 [별도 adapter 후보 안내](dynamic-vite-adapter.md)를 확인하세요. 미발행 후보의 기능이며 기존 registry `0.0.1`이 해당 문법을 지원한다는 뜻은 아닙니다.
+
 ## 검사
 
 ```sh
